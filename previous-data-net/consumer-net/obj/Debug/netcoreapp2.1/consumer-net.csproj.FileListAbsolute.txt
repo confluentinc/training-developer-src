@@ -1,0 +1,11 @@
+/app/consumer-net/bin/Debug/netcoreapp2.1/consumer-net.deps.json
+/app/consumer-net/bin/Debug/netcoreapp2.1/consumer-net.runtimeconfig.json
+/app/consumer-net/bin/Debug/netcoreapp2.1/consumer-net.runtimeconfig.dev.json
+/app/consumer-net/bin/Debug/netcoreapp2.1/consumer-net.dll
+/app/consumer-net/bin/Debug/netcoreapp2.1/consumer-net.pdb
+/app/consumer-net/obj/Debug/netcoreapp2.1/consumer-net.csprojAssemblyReference.cache
+/app/consumer-net/obj/Debug/netcoreapp2.1/consumer-net.csproj.CoreCompileInputs.cache
+/app/consumer-net/obj/Debug/netcoreapp2.1/consumer-net.AssemblyInfoInputs.cache
+/app/consumer-net/obj/Debug/netcoreapp2.1/consumer-net.AssemblyInfo.cs
+/app/consumer-net/obj/Debug/netcoreapp2.1/consumer-net.dll
+/app/consumer-net/obj/Debug/netcoreapp2.1/consumer-net.pdb

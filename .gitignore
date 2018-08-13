@@ -2,3 +2,5 @@
 data/
 build/
 .gradle/
+bin/
+obj/

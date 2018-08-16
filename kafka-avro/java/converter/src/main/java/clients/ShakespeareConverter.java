@@ -27,7 +27,7 @@ public class ShakespeareConverter {
     private KafkaConsumer<String,String> createConsumer() {
         Properties props = new Properties();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "kafka-1:9092,kafka-2:9092");
-        props.put(ConsumerConfig.GROUP_ID_CONFIG, "testgroup");
+        props.put(ConsumerConfig.GROUP_ID_CONFIG, "sample_group");
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
@@ -43,7 +43,7 @@ public class ShakespeareConverter {
         props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, KafkaAvroSerializer.class);
         props.put("schema.registry.url", "http://schema-registry:8081");
 
-        KafkaProducer<Object, Object> producer = new KafkaProducer<Object, Object>(props);
+        KafkaProducer<Object, Object> producer = new KafkaProducer<>(props);
         return producer;
     }
 
@@ -82,6 +82,10 @@ public class ShakespeareConverter {
 
         while(true) {
             ConsumerRecords<String, String> records = consumer.poll(100);
+            // give some feedback...
+            if(records.count() > 0){
+                System.out.print(".");
+            }
             for (ConsumerRecord<String, String> record : records) {
 
                 // Get original strings from message and convert to Avro

@@ -114,6 +114,8 @@ services:
     container_name: connect
     ports:
       - "8083:8083"
+    volumes:
+      - ./data:/data
     networks:
       - confluent
     environment:

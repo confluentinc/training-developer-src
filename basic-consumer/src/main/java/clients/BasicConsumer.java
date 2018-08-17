@@ -20,7 +20,8 @@ public class BasicConsumer {
         settings.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         settings.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
 
-        try (KafkaConsumer<String, String> consumer = new KafkaConsumer<>(settings)) {
+        KafkaConsumer<String, String> consumer = new KafkaConsumer<>(settings);
+        try {
             consumer.subscribe(Arrays.asList("hello_world_topic"));
 
             while (true) {

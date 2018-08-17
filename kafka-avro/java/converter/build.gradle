@@ -13,15 +13,14 @@ repositories {
     jcenter()
 }
 
-shadowJar {
-   baseName = 'shakespeare-converter'
-   classifier = null
-   version = '0.1.0'
-}
-
 jar {
     baseName = 'shakespeare-converter'
-    version =  '0.1.0'
+}
+
+shadowJar {
+   baseName = 'app'
+   classifier = null
+   version = null
 }
 
 sourceCompatibility = 1.8

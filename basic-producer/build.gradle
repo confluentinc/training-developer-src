@@ -11,15 +11,14 @@ repositories {
     maven { url "http://packages.confluent.io/maven/" }
 }
 
-shadowJar {
-   baseName = 'basic-producer'
-   classifier = null
-   version = '0.1.0'
-}
-
 jar {
     baseName = 'basic-producer'
-    version =  '0.1.0'
+}
+
+shadowJar {
+   baseName = 'app'
+   classifier = null
+   version = null
 }
 
 sourceCompatibility = 1.8

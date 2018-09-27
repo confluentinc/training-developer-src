@@ -22,7 +22,7 @@ public class StreamsSample {
         String appID = UUID.randomUUID().toString();
         Properties settings = new Properties();
         settings.put(StreamsConfig.APPLICATION_ID_CONFIG, appID);
-        settings.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "kafka-1:9092,kafka-2:9092");
+        settings.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "kafka:9092");
         StreamsConfig config = new StreamsConfig(settings);
 
         final Serde<String> stringSerde = Serdes.String();

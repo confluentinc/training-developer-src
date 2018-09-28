@@ -9,7 +9,7 @@ public class BasicProducer {
         System.out.println("*** Starting Basic Producer ***");
         Properties settings = new Properties();
         settings.put("client.id", "basic-producer-v0.1.0");
-        settings.put("bootstrap.servers", "kafka-1:9092,kafka-2:9092");
+        settings.put("bootstrap.servers", "kafka-9092");
         settings.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
         settings.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
 

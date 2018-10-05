@@ -34,7 +34,7 @@ namespace consumer_net {
                   consumer.Assign(fromBeginning);
                 };
 
-                consumer.Subscribe ("hello_world_topic");
+                consumer.Subscribe ("hello-world-topic");
 
                 while (true) {
                     consumer.Poll (TimeSpan.FromMilliseconds (100));

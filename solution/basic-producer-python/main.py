@@ -2,7 +2,7 @@ import requests
 import base64
 import json
 
-url = "http://rest-proxy:8082/topics/hello_world_topic"
+url = "http://rest-proxy:8082/topics/hello-python-topic"
 
 headers = {
     "Content-Type": "application/vnd.kafka.json.v2+json"

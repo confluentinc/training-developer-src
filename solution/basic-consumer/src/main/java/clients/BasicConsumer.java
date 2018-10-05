@@ -22,7 +22,7 @@ public class BasicConsumer {
 
         KafkaConsumer<String, String> consumer = new KafkaConsumer<>(settings);
         try {
-            consumer.subscribe(Arrays.asList("hello_world_topic"));
+            consumer.subscribe(Arrays.asList("hello-world-topic"));
 
             while (true) {
                 ConsumerRecords<String, String> records = consumer.poll(100);

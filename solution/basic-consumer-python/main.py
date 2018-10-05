@@ -54,11 +54,11 @@ if r.status_code != 200:
 
 print("Base URI: " + r.json()["base_uri"])
 
-print("Subscribing the consumer to the topic 'hello_world_topic'")
+print("Subscribing the consumer to the topic 'hello-python-topic'")
 url = "http://rest-proxy:8082/consumers/{0}/instances/{1}/subscription".format(CONSUMER_GROUP_ID, INSTANCE_ID)
 
 payload = {
-    "topics": ["hello_world_topic"]
+    "topics": ["hello-python-topic"]
 }
 
 r = requests.post(url, data=json.dumps(payload), headers=headers)

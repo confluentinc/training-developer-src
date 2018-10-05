@@ -20,7 +20,7 @@ public class BasicProducer {
             producer.close();
         }));
 
-        final String topic = "hello_world_topic";
+        final String topic = "hello-world-topic";
         for(int i=1; i<=5; i++){
             final String key = "key-" + i;
             final String value = "value-" + i;

@@ -15,7 +15,7 @@ namespace app
         {
             Console.WriteLine(">>> Starting Shakespeare Producer");
 
-            string brokerList = "kafka-9092";
+            string brokerList = "kafka:9092";
             string topicName = "shakespeare_topic_net";
 
             var config = new Dictionary<string, object> { { "bootstrap.servers", brokerList } };

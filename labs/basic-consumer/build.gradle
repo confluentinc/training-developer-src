@@ -1,0 +1,30 @@
+plugins {
+  id 'com.github.johnrengelman.shadow' version '2.0.4'
+  id 'java'
+  id 'application'
+}
+
+mainClassName = 'clients.BasicConsumer'
+
+repositories {
+    mavenCentral()
+    maven { url "http://packages.confluent.io/maven/" }
+}
+
+jar {
+    baseName = 'basic-consumer'
+}
+
+shadowJar {
+   baseName = 'app'
+   classifier = null
+   version = null
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+dependencies {
+    compile group: "org.apache.kafka", name: "kafka-clients", version: "2.0.0"
+    compile group: "org.slf4j", name: "slf4j-log4j12", version: "1.7.25"
+}

@@ -1,0 +1,36 @@
+plugins {
+  id 'com.github.johnrengelman.shadow' version '2.0.4'
+  id 'com.commercehub.gradle.plugin.avro' version '0.14.2'
+  id 'java'
+  id 'application'
+}
+
+mainClassName = 'streams.StreamsConsumer'
+
+repositories {
+    mavenCentral()
+    maven { url "http://packages.confluent.io/maven/" }
+}
+
+jar {
+    baseName = 'streams-consumer'
+}
+
+shadowJar {
+   baseName = 'app'
+   classifier = null
+   version = null
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+dependencies {
+    compile group: "org.apache.kafka", name: "kafka-clients", version: "2.0.0"
+    compile group: "org.apache.kafka", name: "kafka-streams", version: "2.0.0"
+    compile group: "org.apache.avro", name: "avro", version: "1.8.2"
+    compile group: 'org.apache.avro', name: 'avro-tools', version: '1.8.2'
+    compile group: "io.confluent", name: "kafka-streams-avro-serde", version: "5.0.0"
+    compile group: "io.confluent", name: "kafka-avro-serializer", version: "5.0.0"
+    compile group: "org.slf4j", name: "slf4j-log4j12", version: "1.7.25"
+}

@@ -11,7 +11,7 @@ namespace consumer_net {
             Console.WriteLine ("Starting Consumer!");
             var conf = new Dictionary<string, object> { 
                   { "group.id", "dotnet-consumer-group" },
-                  { "bootstrap.servers", "kafka-9092" },
+                  { "bootstrap.servers", "kafka:9092" },
                   { "auto.commit.interval.ms", 5000 },
                   { "auto.offset.reset", "earliest" }
                 };

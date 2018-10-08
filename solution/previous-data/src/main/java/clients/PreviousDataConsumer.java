@@ -13,7 +13,7 @@ public class PreviousDataConsumer {
         System.out.println("*** Starting Previous Data Consumer ***");
         Properties settings = new Properties();
         settings.put(ConsumerConfig.GROUP_ID_CONFIG, "previous-data-consumer-v0.1.0");
-        settings.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "kafka-9092");
+        settings.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "kafka:9092");
         settings.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "true");
         settings.put(ConsumerConfig.AUTO_COMMIT_INTERVAL_MS_CONFIG, "1000");
         settings.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");

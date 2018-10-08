@@ -6,7 +6,7 @@ using Confluent.Kafka.Serialization;
 namespace app
 {
     public class Program {
-        private static string bootstrapServers = "kafka-9092";
+        private static string bootstrapServers = "kafka:9092";
         private static string schemaRegistryUrl = "schema-registry:8081";
         private static string topicName = "shakespeare_avro_topic_net";
 

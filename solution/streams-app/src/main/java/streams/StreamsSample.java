@@ -5,13 +5,13 @@ import java.util.UUID;
 
 import org.apache.kafka.common.serialization.Serde;
 import org.apache.kafka.common.serialization.Serdes;
-import org.apache.kafka.streams.Consumed;
 import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.StreamsConfig;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.Topology;
 import org.apache.kafka.streams.kstream.KStream;
+import org.apache.kafka.streams.kstream.Consumed;
 import org.apache.kafka.streams.kstream.Produced;
 
 
@@ -23,7 +23,6 @@ public class StreamsSample {
         Properties settings = new Properties();
         settings.put(StreamsConfig.APPLICATION_ID_CONFIG, appID);
         settings.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "kafka:9092");
-        StreamsConfig config = new StreamsConfig(settings);
 
         final Serde<String> stringSerde = Serdes.String();
         StreamsBuilder builder = new StreamsBuilder();
@@ -38,7 +37,7 @@ public class StreamsSample {
 
         Topology topology = builder.build();
 
-        KafkaStreams streams = new KafkaStreams(topology, config);
+        KafkaStreams streams = new KafkaStreams(topology, settings);
         streams.start();
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {

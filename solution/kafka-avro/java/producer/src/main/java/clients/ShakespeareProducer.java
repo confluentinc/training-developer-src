@@ -17,7 +17,7 @@ public class ShakespeareProducer {
 
     private KafkaProducer<String, String> createProducer(){
         Properties settings = new Properties();
-        settings.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "kafka-9092");
+        settings.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "kafka:9092");
         settings.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         settings.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
 

@@ -1,5 +1,6 @@
 package clients;
 
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Properties;
@@ -81,7 +82,7 @@ public class ShakespeareConverter {
         consumer.subscribe(Arrays.asList("shakespeare_topic"));
 
         while(true) {
-            ConsumerRecords<String, String> records = consumer.poll(100);
+            ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(100));
             // give some feedback...
             if(records.count() > 0){
                 System.out.print(".");

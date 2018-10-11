@@ -1,5 +1,6 @@
 package clients;
 
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.Properties;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -25,7 +26,7 @@ public class BasicConsumer {
             consumer.subscribe(Arrays.asList("hello-world-topic"));
 
             while (true) {
-                ConsumerRecords<String, String> records = consumer.poll(100);
+                ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(100));
                 for (ConsumerRecord<String, String> record : records)
                     System.out.printf("offset = %d, key = %s, value = %s\n", record.offset(), record.key(), record.value());
             }

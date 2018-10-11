@@ -26,7 +26,7 @@ public class PreviousDataConsumer {
             consumer.subscribe(Arrays.asList("hello-world-topic"));
             
             // Always start from the beginning
-            consumer.poll(0);
+            consumer.poll(Duration.ZERO);
             consumer.seekToBeginning(consumer.assignment());
 
             while (true) {

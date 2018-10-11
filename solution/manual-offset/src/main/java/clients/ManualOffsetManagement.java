@@ -1,5 +1,6 @@
 package clients;
 
+import java.time.Duration;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -30,7 +31,7 @@ public class ManualOffsetManagement {
 
         try (KafkaConsumer<String, String> consumer = new KafkaConsumer<>(props)) {
             consumer.subscribe(Arrays.asList("two-p-topic"));
-            consumer.poll(Duration.ofMillis(0));
+            consumer.poll(Duration.ZERO);
             for (TopicPartition partition : consumer.assignment()) {
                 if (Files.exists(Paths.get(OFFSET_FILE_PREFIX + partition.partition()))) {
                     long offset = Long

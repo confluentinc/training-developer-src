@@ -1,5 +1,6 @@
 package clients;
 
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.Properties;
 import org.apache.kafka.clients.consumer.ConsumerRecord;

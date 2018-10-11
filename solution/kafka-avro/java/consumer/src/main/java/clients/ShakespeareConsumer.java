@@ -12,6 +12,7 @@ import io.confluent.kafka.serializers.KafkaAvroDeserializerConfig;
 import solution.model.ShakespeareKey;
 import solution.model.ShakespeareValue;
 
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.Properties;
 
@@ -36,7 +37,7 @@ public class ShakespeareConsumer
 
         try {
             while (true) {
-                ConsumerRecords<ShakespeareKey, ShakespeareValue> records = consumer.poll(100);
+                ConsumerRecords<ShakespeareKey, ShakespeareValue> records = consumer.poll(Duration.ofMillis(100));
                 for (ConsumerRecord<ShakespeareKey, ShakespeareValue> record : records) {
                     System.out.printf("%s, %s: %s \n", record.key().work, record.key().year, record.value().line);
                 }

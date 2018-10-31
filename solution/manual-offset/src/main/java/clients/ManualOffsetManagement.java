@@ -6,11 +6,13 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Properties;
 
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
+import org.apache.kafka.clients.consumer.ConsumerRebalanceListener;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.TopicPartition;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -29,18 +31,33 @@ public class ManualOffsetManagement {
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
 
-        try (KafkaConsumer<String, String> consumer = new KafkaConsumer<>(props)) {
-            consumer.subscribe(Arrays.asList("two-p-topic"));
-            consumer.poll(Duration.ZERO);
-            for (TopicPartition partition : consumer.assignment()) {
-                if (Files.exists(Paths.get(OFFSET_FILE_PREFIX + partition.partition()))) {
-                    long offset = Long
-                        .parseLong(Files.readAllLines(Paths.get(OFFSET_FILE_PREFIX + partition.partition()),
-                                    Charset.defaultCharset()).get(0));
-                    consumer.seek(partition, offset);
-                }
-            }
+        KafkaConsumer<String, String> consumer = new KafkaConsumer<>(props);
 
+        ConsumerRebalanceListener listener = new ConsumerRebalanceListener() {
+            @Override
+			public void onPartitionsRevoked(Collection<TopicPartition> partitions) {
+                // nothing to do...
+			}
+            
+            @Override
+			public void onPartitionsAssigned(Collection<TopicPartition> partitions) {
+                for (TopicPartition partition : partitions) {
+                    try{
+                        if (Files.exists(Paths.get(OFFSET_FILE_PREFIX + partition.partition()))) {
+                            long offset = Long
+                                .parseLong(Files.readAllLines(Paths.get(OFFSET_FILE_PREFIX + partition.partition()),
+                                            Charset.defaultCharset()).get(0));
+                            consumer.seek(partition, offset);
+                        }
+                    } catch(IOException e) {
+                        System.out.printf("ERR: Could not read offset from file.\n");
+                    }
+                }
+			}
+		};
+
+        try {
+            consumer.subscribe(Arrays.asList("two-p-topic"), listener);
             while (true) {
                 ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(100));
                 for (ConsumerRecord<String, String> record : records) {
@@ -51,6 +68,9 @@ public class ManualOffsetManagement {
                 }
 
             }
+        }
+        finally{
+            consumer.close();
         }
     }
 }

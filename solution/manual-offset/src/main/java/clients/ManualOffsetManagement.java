@@ -18,7 +18,7 @@ import org.apache.kafka.common.serialization.StringDeserializer;
 
 public class ManualOffsetManagement {
     public static void main(String[] args) throws IOException {
-        final String OFFSET_FILE_PREFIX = "offset_";
+        final String OFFSET_FILE_PREFIX = "/data/offset_";
 
         Properties props = new Properties();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "kafka:9092");

@@ -2,11 +2,14 @@ package clients;
 
 import java.time.Duration;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Properties;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
+import org.apache.kafka.clients.consumer.ConsumerRebalanceListener;
+import org.apache.kafka.common.TopicPartition;
 import org.apache.kafka.common.serialization.StringDeserializer;
 
 public class PreviousDataConsumer {
@@ -22,13 +25,21 @@ public class PreviousDataConsumer {
         settings.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
 
         KafkaConsumer<String, String> consumer = new KafkaConsumer<>(settings);
-        try {
-            consumer.subscribe(Arrays.asList("hello-world-topic"));
-            
-            // Always start from the beginning
-            consumer.poll(0);
-            consumer.seekToBeginning(consumer.assignment());
 
+        ConsumerRebalanceListener listener = new ConsumerRebalanceListener() {
+            @Override
+			public void onPartitionsRevoked(Collection<TopicPartition> partitions) {
+                // nothing to do...
+			}
+            
+            @Override
+			public void onPartitionsAssigned(Collection<TopicPartition> partitions) {
+				consumer.seekToBeginning(partitions);
+			}
+		};
+
+        try {
+            consumer.subscribe(Arrays.asList("hello-world-topic"), listener);
             while (true) {
                 ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(100));
                 for (ConsumerRecord<String, String> record : records) {

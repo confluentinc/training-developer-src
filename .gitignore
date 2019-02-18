@@ -1,7 +1,12 @@
-.vscode/
+.vscode/*
+!.vscode/launch.json
+!.vscode/tasks.json
 data/
 build/
 .gradle/
 bin/
 obj/
 experiment/
+.classpath
+.project
+.settings

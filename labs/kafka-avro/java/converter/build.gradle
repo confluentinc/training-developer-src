@@ -1,8 +1,19 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath "com.commercehub.gradle.plugin:gradle-avro-plugin:0.14.2"
+    }
+}
+
 plugins {
-  id 'com.commercehub.gradle.plugin.avro' version '0.14.2'
   id 'java'
   id 'application'
 }
+
+apply plugin: "com.commercehub.gradle.plugin.avro"
+
 
 mainClassName = 'clients.ShakespeareConverter'
 
@@ -19,10 +30,18 @@ jar {
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
+repositories {
+    jcenter()
+}
 dependencies {
     compile group: 'org.apache.kafka', name: 'kafka-clients', version: '2.0.0'
     compile group: 'org.apache.avro', name: 'avro', version: '1.8.2'
     compile group: 'org.apache.avro', name: 'avro-tools', version: '1.8.2'
     compile group: 'io.confluent', name: 'kafka-avro-serializer', version: '5.0.0'
     compile group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.7.25'
+}
+
+task generateAvro(type: com.commercehub.gradle.plugin.avro.GenerateAvroJavaTask) {
+    source("src/avro")
+    outputDir = file("dest/avro")
 }

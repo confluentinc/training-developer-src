@@ -9,7 +9,7 @@ namespace app
 {
     class Program
     {
-        private static String INPUT_PATH_NAME = "/datasets/shakespeare";
+        private static String INPUT_PATH_NAME = "../../../datasets/shakespeare";
         
         static void Main(string[] args)
         {
@@ -23,7 +23,8 @@ namespace app
             using (var producer = new Producer<string, string>(config, 
                     new StringSerializer(Encoding.UTF8), new StringSerializer(Encoding.UTF8)))
             {
-                var files = Directory.GetFiles(INPUT_PATH_NAME);
+                var currentDirectory = System.IO.Directory.GetCurrentDirectory();
+                var files = Directory.GetFiles(Path.Combine(currentDirectory, INPUT_PATH_NAME));
                 foreach(var file in files){
                     var key = Path.GetFileNameWithoutExtension(file);
                     Console.WriteLine($"Working on file: {key}");

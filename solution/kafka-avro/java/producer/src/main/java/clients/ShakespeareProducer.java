@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Properties;
 
 import org.apache.kafka.common.serialization.StringSerializer;
@@ -13,7 +15,7 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.ProducerConfig;
 
 public class ShakespeareProducer {
-    private final static String INPUT_PATH_NAME = "/datasets/shakespeare";
+    private final static String INPUT_PATH_NAME = "../../../datasets/shakespeare";
 
     private KafkaProducer<String, String> createProducer(){
         Properties settings = new Properties();
@@ -44,7 +46,10 @@ public class ShakespeareProducer {
 
     private void runProducer() throws IOException {
         KafkaProducer<String, String> producer = createProducer();
-        File inputFile = new File(INPUT_PATH_NAME);
+        Path currentPath = Paths.get(System.getProperty("user.dir"));
+        Path inputPath = Paths.get(currentPath.toString(), INPUT_PATH_NAME);        
+
+        File inputFile = new File(inputPath.toString());
         if(inputFile.isDirectory()){
             for(File fileInDirectory : inputFile.listFiles()) {
                 sendFile(fileInDirectory, producer);

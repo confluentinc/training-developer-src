@@ -5,3 +5,4 @@ build/
 bin/
 obj/
 experiment/
+node_modules/

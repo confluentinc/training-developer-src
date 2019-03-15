@@ -1,0 +1,18 @@
+version: "3.5"
+services:
+  vp-producer:
+    image: cnfltraining/vp-producer:1.0
+    hostname: vp-producer
+    restart: always
+    networks:
+      - confluent
+  
+  vp-consumer:
+    image: cnfltraining/vp-consumer:1.0
+    hostname: vp-consumer
+    restart: always
+    networks:
+      - confluent
+
+networks:
+  confluent:

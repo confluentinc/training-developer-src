@@ -1,0 +1,24 @@
+plugins {
+  id 'java'
+  id 'application'
+}
+
+mainClassName = 'clients.PrevDataConsumer'
+
+repositories {
+    mavenCentral()
+    maven { url 'http://packages.confluent.io/maven/' }
+}
+
+jar {
+    baseName = 'prev-data-consumer'
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+dependencies {
+    compile group: 'org.apache.kafka', name: 'kafka-clients', version: '2.1.1'
+    compile group: "io.confluent", name: "monitoring-interceptors", version: '5.1.2'
+    compile group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.7.25'
+}

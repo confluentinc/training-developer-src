@@ -107,15 +107,6 @@ services:
       KSQL_CONSUMER_INTERCEPTOR_CLASSES: "io.confluent.monitoring.clients.interceptor.MonitoringConsumerInterceptor"
       KSQL_KSQL_SERVER_UI_ENABLED: "false"
 
-  ksql-cli:
-    image: confluentinc/cp-ksql-cli:5.0.0
-    container_name: ksql-cli
-    hostname: ksql-cli
-    networks:
-      - confluent
-    entrypoint: /bin/sh
-    tty: true
-
   control-center:
     image: confluentinc/cp-enterprise-control-center:5.0.0
     container_name: control-center

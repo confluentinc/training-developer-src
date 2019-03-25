@@ -3,7 +3,6 @@ services:
   zookeeper:
     image: confluentinc/cp-zookeeper:5.0.0
     hostname: zookeeper
-    container_name: zookeeper
     networks:
       - confluent
     environment:
@@ -13,7 +12,6 @@ services:
   kafka:
     image: "confluentinc/cp-enterprise-kafka:5.0.0"
     hostname: kafka
-    container_name: kafka
     networks:
       - confluent
     environment:
@@ -31,7 +29,6 @@ services:
   schema-registry:
     image: "confluentinc/cp-schema-registry:5.0.0"
     hostname: schema-registry
-    container_name: schema-registry
     networks:
       - confluent
     environment:
@@ -42,9 +39,6 @@ services:
   connect:
     image: confluentinc/cp-kafka-connect:5.0.0
     hostname: connect
-    ports:
-      - "8083:8083"
-    container_name: connect
     restart: always
     volumes:
       - ./data:/data
@@ -77,7 +71,6 @@ services:
   rest-proxy:
     image: confluentinc/cp-kafka-rest:5.0.0
     hostname: rest-proxy
-    container_name: rest-proxy
     networks:
       - confluent
     environment:
@@ -89,9 +82,6 @@ services:
   ksql-server:
     image: "confluentinc/cp-ksql-server:5.0.0"
     hostname: ksql-server
-    container_name: ksql-server
-    ports:
-      - "8088:8088"
     networks:
       - confluent
     environment:
@@ -109,7 +99,6 @@ services:
 
   control-center:
     image: confluentinc/cp-enterprise-control-center:5.0.0
-    container_name: control-center
     restart: always
     networks:
       - confluent

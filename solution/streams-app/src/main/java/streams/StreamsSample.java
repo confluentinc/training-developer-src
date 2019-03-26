@@ -1,4 +1,4 @@
-package clients;
+package streams;
 
 import java.util.Properties;
 import java.util.UUID;
@@ -31,7 +31,7 @@ public class StreamsSample {
 
         lines.mapValues(value -> value.toUpperCase())
             .to("shakespeare_upper_topic", Produced.with(stringSerde, stringSerde));
-        
+
         lines.filter((key,value) -> key.contains("Macbeth"))
             .to("shakespeare_macbeth_topic", Produced.with(stringSerde, stringSerde));
 

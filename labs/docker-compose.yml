@@ -2,7 +2,7 @@ version: "3.5"
 services:
   zookeeper:
     image: confluentinc/cp-zookeeper:5.0.0
-    container_name: zookeeper
+    hostname: zookeeper
     networks:
       - confluent
     environment:
@@ -11,7 +11,7 @@ services:
   
   kafka:
     image: "confluentinc/cp-enterprise-kafka:5.0.0"
-    container_name: kafka
+    hostname: kafka
     networks:
       - confluent
     environment:
@@ -28,7 +28,7 @@ services:
 
   schema-registry:
     image: "confluentinc/cp-schema-registry:5.0.0"
-    container_name: schema-registry
+    hostname: schema-registry
     networks:
       - confluent
     environment:
@@ -38,10 +38,8 @@ services:
 
   connect:
     image: confluentinc/cp-kafka-connect:5.0.0
-    container_name: connect
+    hostname: connect
     restart: always
-    ports:
-      - "8083:8083"
     volumes:
       - ./data:/data
     networks:
@@ -72,7 +70,7 @@ services:
 
   rest-proxy:
     image: confluentinc/cp-kafka-rest:5.0.0
-    container_name: rest-proxy
+    hostname: rest-proxy
     networks:
       - confluent
     environment:
@@ -83,9 +81,7 @@ services:
 
   ksql-server:
     image: "confluentinc/cp-ksql-server:5.0.0"
-    container_name: ksql-server
-    ports:
-      - "8088:8088"
+    hostname: ksql-server
     networks:
       - confluent
     environment:
@@ -101,18 +97,8 @@ services:
       KSQL_CONSUMER_INTERCEPTOR_CLASSES: "io.confluent.monitoring.clients.interceptor.MonitoringConsumerInterceptor"
       KSQL_KSQL_SERVER_UI_ENABLED: "false"
 
-  ksql-cli:
-    image: confluentinc/cp-ksql-cli:5.0.0
-    container_name: ksql-cli
-    hostname: ksql-cli
-    networks:
-      - confluent
-    entrypoint: /bin/sh
-    tty: true
-
   control-center:
     image: confluentinc/cp-enterprise-control-center:5.0.0
-    container_name: control-center
     restart: always
     networks:
       - confluent
@@ -134,13 +120,13 @@ services:
       CONTROL_CENTER_SCHEMA_REGISTRY_URL: "http://schema-registry:8081"
 
   base:
-    image: confluentinc/cp-kafka-connect:5.0.0
+    image: cnfltraining/training-tools
     container_name: base
     hostname: base
     networks:
       - confluent
     volumes:
-      - ./data:/data
+      - .:/root/confluent-dev/labs/
     command: /bin/sh
     tty: true
     environment:

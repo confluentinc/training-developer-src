@@ -6,3 +6,4 @@ bin/
 obj/
 experiment/
 node_modules/
+.DS_Store

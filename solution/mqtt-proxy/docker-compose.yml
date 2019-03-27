@@ -1,0 +1,43 @@
+version: "3.5"
+services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:5.1.2
+    hostname: zookeeper
+    networks:
+      - confluent
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+
+  kafka:
+    image: "confluentinc/cp-enterprise-kafka:5.1.2"
+    hostname: kafka
+    networks:
+      - confluent
+    ports:
+      - 9092:9092
+    environment:
+      KAFKA_BROKER_ID: 101
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "false"
+      KAFKA_DELETE_TOPIC_ENABLE: "true"
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_METRIC_REPORTERS: "io.confluent.metrics.reporter.ConfluentMetricsReporter"
+      CONFLUENT_METRICS_REPORTER_BOOTSTRAP_SERVERS: "kafka:9092"
+
+  mqtt:
+    image: confluentinc/cp-kafka-mqtt:5.1.2
+    hostname: mqtt
+    networks:
+      - confluent
+    ports:
+      - 1883:1883
+    environment:
+      KAFKA_MQTT_BOOTSTRAP_SERVERS: kafka:9092
+      KAFKA_MQTT_CONFLUENT_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_MQTT_TOPIC_REGEX_LIST: temperature:.*temperature, brightness:.*brightness
+      KAFKA_MQTT_LISTENERS: 0.0.0.0:1883
+
+networks:
+  confluent:      

@@ -36,6 +36,39 @@ services:
       SCHEMA_REGISTRY_KAFKASTORE_CONNECTION_URL: zookeeper:2181
       SCHEMA_REGISTRY_LISTENERS: http://schema-registry:8081
 
+  connect:
+    image: confluentinc/kafka-connect-mqtt:latest
+    build: connect
+    hostname: connect
+    restart: always
+    ports:
+      - "8083:8083"
+    networks:
+      - confluent
+    environment:
+      CONNECT_BOOTSTRAP_SERVERS: kafka:9092
+      CONNECT_REST_PORT: 8083
+      CONNECT_GROUP_ID: "connect"
+      CONNECT_CONFIG_STORAGE_TOPIC: "connect-config"
+      CONNECT_OFFSET_STORAGE_TOPIC: "connect-offsets"
+      CONNECT_STATUS_STORAGE_TOPIC: "connect-status"
+      CONNECT_REPLICATION_FACTOR: 1
+      CONNECT_CONFIG_STORAGE_REPLICATION_FACTOR: 1
+      CONNECT_OFFSET_STORAGE_REPLICATION_FACTOR: 1
+      CONNECT_STATUS_STORAGE_REPLICATION_FACTOR: 1
+      CONNECT_KEY_CONVERTER: "io.confluent.connect.avro.AvroConverter"
+      CONNECT_VALUE_CONVERTER: "io.confluent.connect.avro.AvroConverter"
+      CONNECT_KEY_CONVERTER_SCHEMA_REGISTRY_URL: "http://schema-registry:8081"
+      CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL: "http://schema-registry:8081"
+      CONNECT_INTERNAL_KEY_CONVERTER: "org.apache.kafka.connect.json.JsonConverter"
+      CONNECT_INTERNAL_VALUE_CONVERTER: "org.apache.kafka.connect.json.JsonConverter"
+      CONNECT_REST_ADVERTISED_HOST_NAME: "connect"
+      CONNECT_PLUGIN_PATH: /usr/share/java,/usr/share/confluent-hub-components
+      CONNECT_LOG4J_ROOT_LOGLEVEL: INFO
+      CONNECT_LOG4J_LOGGERS: org.reflections=ERROR
+      CONNECT_PRODUCER_INTERCEPTOR_CLASSES: io.confluent.monitoring.clients.interceptor.MonitoringProducerInterceptor
+      CONNECT_CONSUMER_INTERCEPTOR_CLASSES: io.confluent.monitoring.clients.interceptor.MonitoringConsumerInterceptor
+
   control-center:
     image: confluentinc/cp-enterprise-control-center:5.1.2
     hostname: control-center
@@ -52,43 +85,9 @@ services:
       CONTROL_CENTER_COMMAND_TOPIC_REPLICATION: 1
       CONTROL_CENTER_METRICS_TOPIC_REPLICATION: 1
       CONTROL_CENTER_STREAMS_NUM_STREAM_THREADS: 1
+      CONTROL_CENTER_CONNECT_CLUSTER: "connect:8083"
       CONTROL_CENTER_STREAMS_CONSUMER_REQUEST_TIMEOUT_MS: "960032"
       CONTROL_CENTER_SCHEMA_REGISTRY_URL: "http://schema-registry:8081"
 
-  ksql-server:
-    image: "confluentinc/cp-ksql-server:5.1.2"
-    ports:
-      - "8088:8088"
-    networks:
-      - confluent
-    environment:
-      KSQL_CONFIG_DIR: "/etc/ksql"
-      KSQL_BOOTSTRAP_SERVERS: kafka:9092
-      KSQL_HOST_NAME: ksql-server
-      KSQL_APPLICATION_ID: "using-ksql"
-      KSQL_LISTENERS: "http://0.0.0.0:8088"
-      KSQL_CACHE_MAX_BYTES_BUFFERING: 0
-      KSQL_KSQL_SCHEMA_REGISTRY_URL: "http://schema-registry:8081"
-      KSQL_PRODUCER_INTERCEPTOR_CLASSES: "io.confluent.monitoring.clients.interceptor.MonitoringProducerInterceptor"
-      KSQL_CONSUMER_INTERCEPTOR_CLASSES: "io.confluent.monitoring.clients.interceptor.MonitoringConsumerInterceptor"
-      KSQL_KSQL_SERVER_UI_ENABLED: "false"
-
-  ksql-cli:
-    image: confluentinc/cp-ksql-cli:5.1.2
-    hostname: ksql-cli
-    networks:
-      - confluent
-    entrypoint: /bin/sh
-    tty: true
-  
-  base:
-    image: confluentinc/cp-enterprise-kafka:5.1.2
-    hostname: base
-    networks:
-      - confluent
-    volumes:
-      - ./start.sh:/start.sh
-    command: bash -c "/start.sh"
-
 networks:
-  confluent:
+  confluent:      

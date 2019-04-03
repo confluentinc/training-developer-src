@@ -3,6 +3,9 @@ services:
   zookeeper:
     image: confluentinc/cp-zookeeper:5.0.0
     container_name: zookeeper
+    volumes:
+      - data-zookeeper-log:/var/lib/zookeeper/log
+      - data-zookeeper-data:/var/lib/zookeeper/data
     networks:
       - confluent
     environment:
@@ -14,6 +17,8 @@ services:
     container_name: kafka
     networks:
       - confluent
+    volumes:
+      - data-kafka:/var/lib/kafka/data
     environment:
       KAFKA_BROKER_ID: 101
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
@@ -145,6 +150,11 @@ services:
     tty: true
     environment:
       CLASSPATH: /usr/share/java/monitoring-interceptors/monitoring-interceptors-5.0.0.jar
+
+volumes:
+  data-zookeeper-log:
+  data-zookeeper-data:
+  data-kafka:
 
 networks:
   confluent:

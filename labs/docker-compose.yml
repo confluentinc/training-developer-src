@@ -1,7 +1,7 @@
 version: "3.5"
 services:
   zookeeper:
-    image: confluentinc/cp-zookeeper:5.0.0
+    image: confluentinc/cp-zookeeper:5.2.1
     hostname: zookeeper
     networks:
       - confluent
@@ -10,7 +10,7 @@ services:
       ZOOKEEPER_TICK_TIME: 2000
   
   kafka:
-    image: "confluentinc/cp-enterprise-kafka:5.0.0"
+    image: "confluentinc/cp-enterprise-kafka:5.2.1"
     hostname: kafka
     networks:
       - confluent
@@ -27,7 +27,7 @@ services:
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 100
 
   schema-registry:
-    image: "confluentinc/cp-schema-registry:5.0.0"
+    image: "confluentinc/cp-schema-registry:5.2.1"
     hostname: schema-registry
     networks:
       - confluent
@@ -37,7 +37,7 @@ services:
       SCHEMA_REGISTRY_LISTENERS: http://schema-registry:8081
 
   connect:
-    image: confluentinc/cp-kafka-connect:5.0.0
+    image: confluentinc/cp-kafka-connect:5.2.1
     hostname: connect
     restart: always
     volumes:
@@ -69,7 +69,7 @@ services:
       CONNECT_CONSUMER_INTERCEPTOR_CLASSES: io.confluent.monitoring.clients.interceptor.MonitoringConsumerInterceptor
 
   rest-proxy:
-    image: confluentinc/cp-kafka-rest:5.0.0
+    image: confluentinc/cp-kafka-rest:5.2.1
     hostname: rest-proxy
     networks:
       - confluent
@@ -80,7 +80,7 @@ services:
       KAFKA_REST_SCHEMA_REGISTRY_URL: "http://schema-registry:8081"
 
   ksql-server:
-    image: "confluentinc/cp-ksql-server:5.0.0"
+    image: "confluentinc/cp-ksql-server:5.2.1"
     hostname: ksql-server
     networks:
       - confluent
@@ -98,7 +98,7 @@ services:
       KSQL_KSQL_SERVER_UI_ENABLED: "false"
 
   control-center:
-    image: confluentinc/cp-enterprise-control-center:5.0.0
+    image: confluentinc/cp-enterprise-control-center:5.2.1
     restart: always
     networks:
       - confluent

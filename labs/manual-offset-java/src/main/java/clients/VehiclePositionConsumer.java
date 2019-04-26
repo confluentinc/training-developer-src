@@ -18,8 +18,6 @@ import org.apache.kafka.common.TopicPartition;
 import org.apache.kafka.common.serialization.StringDeserializer;
 
 public class VehiclePositionConsumer {
-    final static String OFFSET_FILE_PREFIX = "./offsets/offset_";
-
     public static void main(String[] args) throws IOException {
         System.out.println("*** Starting VP Consumer ***");
         
@@ -31,17 +29,14 @@ public class VehiclePositionConsumer {
         settings.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
 
         KafkaConsumer<String, String> consumer = new KafkaConsumer<>(settings);
-        ConsumerRebalanceListener listener = createListener(consumer);
         try {
-            consumer.subscribe(Arrays.asList("vehicle-positions"), listener);
+            consumer.subscribe(Arrays.asList("vehicle-positions"));
 
             while (true) {
                 ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(100));
                 for (ConsumerRecord<String, String> record : records) {
-                    System.out.printf("offset = %d, key = %s, value = %s\n", 
-                            record.offset(), record.key(), record.value());
-                    Files.write(Paths.get(OFFSET_FILE_PREFIX + record.partition()),
-                            Long.valueOf(record.offset() + 1).toString().getBytes());
+                    System.out.printf("partition = %d, offset = %d, key = %s, value = %s\n", 
+                        record.partition(), record.offset(), record.key(), record.value());
                 }
             }
         }
@@ -49,30 +44,5 @@ public class VehiclePositionConsumer {
             System.out.println("*** Ending VP Consumer ***");
             consumer.close();
         }
-    }
-
-    private static ConsumerRebalanceListener createListener(KafkaConsumer<String, String> consumer){
-        return new ConsumerRebalanceListener() {
-            @Override
-			public void onPartitionsRevoked(Collection<TopicPartition> partitions) {
-                // nothing to do...
-			}
-            
-            @Override
-			public void onPartitionsAssigned(Collection<TopicPartition> partitions) {
-                for (TopicPartition partition : partitions) {
-                    try{
-                        if (Files.exists(Paths.get(OFFSET_FILE_PREFIX + partition.partition()))) {
-                            long offset = Long
-                                .parseLong(Files.readAllLines(Paths.get(OFFSET_FILE_PREFIX + partition.partition()),
-                                            Charset.defaultCharset()).get(0));
-                            consumer.seek(partition, offset);
-                        }
-                    } catch(IOException e) {
-                        System.out.printf("ERR: Could not read offset from file.\n");
-                    }
-                }
-			}
-		};
     }
 }

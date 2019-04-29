@@ -10,6 +10,7 @@ public class VehiclePosition {
     public float spd;
     public int hdg;
     public float lat;
+    public float long$;
     
     // due to the fact that "long" is a reserved word in Java
     // we have to implement the attribute as a property with

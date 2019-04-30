@@ -107,22 +107,17 @@ services:
       KSQL_CONSUMER_INTERCEPTOR_CLASSES: "io.confluent.monitoring.clients.interceptor.MonitoringConsumerInterceptor"
       KSQL_KSQL_SERVER_UI_ENABLED: "false"
 
-  ksql-cli:
-    image: confluentinc/cp-ksql-cli:5.2.1
-    hostname: ksql-cli
-    networks:
-      - confluent
-    entrypoint: /bin/sh
-    tty: true
-  
-  base:
-    image: confluentinc/cp-enterprise-kafka:5.2.1
-    hostname: base
+  tools:
+    image: cnfltraining/training-tools
+    hostname: tools
     networks:
       - confluent
     volumes:
-      - ./start.sh:/start.sh
-    command: bash -c "/start.sh"
+      - .:/root/confluent-dev/solution/
+    command: /bin/sh
+    tty: true
+    environment:
+      CLASSPATH: /usr/share/java/monitoring-interceptors/monitoring-interceptors-5.0.0.jar
 
 networks:
   confluent:

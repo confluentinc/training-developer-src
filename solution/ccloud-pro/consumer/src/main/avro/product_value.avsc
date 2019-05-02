@@ -1,0 +1,10 @@
+{"namespace": "solution.model",
+    "type": "record",
+    "name": "ProductValue",
+    "fields": [
+        {"name": "id", "type":  "int"},
+        {"name": "name", "type":  "string"},
+        {"name": "unit_price", "type":  "double"}
+    ]
+}
+   

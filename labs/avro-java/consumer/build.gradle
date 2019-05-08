@@ -1,0 +1,25 @@
+plugins {
+  id 'com.commercehub.gradle.plugin.avro' version '0.16.0'
+  id 'java'
+  id 'application'
+}
+
+mainClassName = 'clients.VehiclePositionConsumer'
+
+repositories {
+    mavenCentral()
+    maven { url 'http://packages.confluent.io/maven/' }
+}
+
+jar {
+    baseName = 'vp-consumer'
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+dependencies {
+    compile group: 'org.apache.kafka', name: 'kafka-clients', version: '2.2.0'
+    compile group: "io.confluent", name: "monitoring-interceptors", version: '5.2.1'
+    compile group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.7.25'
+}

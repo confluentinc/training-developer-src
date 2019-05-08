@@ -3,7 +3,7 @@ plugins {
   id 'application'
 }
 
-mainClassName = 'streams.StreamsSample'
+mainClassName = 'clients.StreamsSample'
 
 repositories {
     mavenCentral()

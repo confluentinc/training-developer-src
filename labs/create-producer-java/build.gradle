@@ -7,7 +7,7 @@ mainClassName = 'clients.VehiclePositionProducer'
 
 repositories {
     mavenCentral()
-    maven { url 'http://packages.confluent.io/maven/' }
+    maven { url "http://packages.confluent.io/maven/" }
 }
 
 jar {

@@ -2,7 +2,14 @@ package clients;
 
 import java.util.Properties;
 import org.apache.kafka.clients.producer.KafkaProducer;
+import org.apache.kafka.clients.producer.ProducerConfig;
+import org.apache.kafka.common.serialization.StringSerializer;
 import org.eclipse.paho.client.mqttv3.*;
+
+import io.confluent.kafka.serializers.KafkaAvroSerializer;
+
+import solution.model.PositionKey;
+import solution.model.PositionValue;
 
 public class VehiclePositionProducer {
     public static void main(String[] args) throws MqttException {

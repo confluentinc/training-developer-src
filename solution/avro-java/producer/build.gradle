@@ -3,7 +3,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath "com.commercehub.gradle.plugin:gradle-avro-plugin:0.14.2"
+        classpath "com.commercehub.gradle.plugin:gradle-avro-plugin:0.16.0"
     }
 }
 
@@ -39,6 +39,10 @@ dependencies {
     compile group: 'io.confluent', name: 'kafka-avro-serializer', version: '5.2.1'
 
     compile group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.7.25'
+}
+
+configurations.all {
+    exclude module: 'slf4j-log4j12'
 }
 
 task generateAvro(type: com.commercehub.gradle.plugin.avro.GenerateAvroJavaTask) {

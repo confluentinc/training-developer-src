@@ -1,9 +1,18 @@
 package clients;
 
+import java.io.IOException;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.eclipse.paho.client.mqttv3.*;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
+
+import clients.VehiclePosition.VehicleValues;
+import solution.model.PositionKey;
+import solution.model.PositionValue;
 
 public class Subscriber implements MqttCallback {
 

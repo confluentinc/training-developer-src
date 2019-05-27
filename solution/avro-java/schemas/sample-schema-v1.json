@@ -1,0 +1,3 @@
+{
+    "schema": "{\"type\":\"record\",\"namespace\":\"solution.model\", \"name\":\"foo\", \"fields\":[{\"name\":\"bar\",\"type\":\"string\"}]}"
+}

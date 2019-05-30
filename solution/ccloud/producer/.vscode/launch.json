@@ -12,10 +12,10 @@
         },
         {
             "type": "java",
-            "name": "Debug (Launch)-PrevDataConsumer<prev-data-java>",
+            "name": "Debug (Launch)-ProductProducer<producer>",
             "request": "launch",
-            "mainClass": "clients.PrevDataConsumer",
-            "projectName": "prev-data-java"
+            "mainClass": "clients.ProductProducer",
+            "projectName": "producer"
         }
     ]
 }

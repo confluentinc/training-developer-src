@@ -23,7 +23,7 @@ repositories {
 }
 
 jar {
-    baseName = 'vp-consumer-avro'
+    baseName = 'vp-consumer'
 }
 
 sourceCompatibility = 1.8
@@ -38,9 +38,4 @@ dependencies {
     compile group: 'io.confluent', name: 'kafka-avro-serializer', version: '5.2.1'
     
     compile group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.7.25'
-}
-
-task generateAvro(type: com.commercehub.gradle.plugin.avro.GenerateAvroJavaTask) {
-    source("src/avro")
-    outputDir = file("dest/avro")
 }

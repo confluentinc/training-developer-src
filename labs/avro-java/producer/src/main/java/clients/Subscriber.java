@@ -10,7 +10,7 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import org.eclipse.paho.client.mqttv3.*;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
-import clients.VehiclePosition.VehicleValues;
+// import clients.VehiclePosition.VehicleValues;
 import solution.model.PositionKey;
 import solution.model.PositionValue;
 

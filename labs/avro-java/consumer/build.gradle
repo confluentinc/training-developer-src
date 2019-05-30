@@ -1,14 +1,25 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath "com.commercehub.gradle.plugin:gradle-avro-plugin:0.16.0"
+    }
+}
+
 plugins {
-  id 'com.commercehub.gradle.plugin.avro' version '0.16.0'
   id 'java'
   id 'application'
 }
+
+apply plugin: "com.commercehub.gradle.plugin.avro"
 
 mainClassName = 'clients.VehiclePositionConsumer'
 
 repositories {
     mavenCentral()
     maven { url 'http://packages.confluent.io/maven/' }
+    jcenter()
 }
 
 jar {

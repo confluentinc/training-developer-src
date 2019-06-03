@@ -92,6 +92,7 @@ services:
 
   ksql-server:
     image: "confluentinc/cp-ksql-server:5.2.1"
+    hostname: ksql-server
     ports:
       - "8088:8088"
     networks:

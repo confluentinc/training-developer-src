@@ -1,0 +1,11 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - PrevDataConsumer",
+            "request": "launch",
+            "mainClass": "clients.PrevDataConsumer",
+            "projectName": "prev-data-java"
+        }
+    ]
+}

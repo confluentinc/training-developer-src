@@ -6,6 +6,7 @@ using Confluent.Kafka;
 
 namespace app {
     class Program {
+        static string OFFSET_FILE_PREFIX = "./offsets/offset_";
         static void Main (string[] args) {
             Console.WriteLine ("Starting .NET Consumer!");
             var conf = new ConsumerConfig { 
@@ -18,8 +19,15 @@ namespace app {
             using (var consumer = new ConsumerBuilder<string, string> (conf)
                 .SetPartitionsAssignedHandler((c, partitions) =>
                 {
-                    Console.WriteLine("Resetting all partitions to offset 0.");
-                    return partitions.Select(tp => new TopicPartitionOffset(tp, new Offset(0)));
+                    Console.WriteLine("Resetting all partitions to offset found in file.");
+                    return partitions.Select(tp => {
+                        var path = Path.GetFullPath(OFFSET_FILE_PREFIX + tp.Partition.Value);
+                        long offset = tp.Partition.Value;
+                        if(File.Exists(path)){
+                            offset = long.Parse(File.ReadAllText(path));
+                        }
+                        return new TopicPartitionOffset(tp, new Offset(offset));
+                    });
                 })
                 .Build()) 
             {
@@ -39,6 +47,9 @@ namespace app {
                         {
                             var cr = consumer.Consume(cts.Token);
                             Console.WriteLine($"Consumed message '{cr.Value}' at: '{cr.TopicPartitionOffset}'.");
+                            File.WriteAllText(Path.GetFullPath(
+                                OFFSET_FILE_PREFIX + cr.TopicPartition.Partition.Value), 
+                                cr.TopicPartitionOffset.Offset.Value.ToString());
                         }
                         catch (ConsumeException e)
                         {

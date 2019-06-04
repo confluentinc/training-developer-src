@@ -9,16 +9,18 @@ c = Consumer({
 })
 
 c.subscribe(['vehicle-positions'])
+try:
+    while True:
+        msg = c.poll(1.0)
 
-while True:
-    msg = c.poll(1.0)
+        if not msg:
+            continue
+        if msg.error():
+            print("Consumer error: {}".format(msg.error()))
+            continue
 
-    if msg is None:
-        continue
-    if msg.error():
-        print("Consumer error: {}".format(msg.error()))
-        continue
-
-    print('Received message: {}'.format(msg.value().decode('utf-8')))
-
-c.close()
+        print('Received message: {}'.format(msg.value().decode('utf-8')))
+except:
+    print("An exception occurred")
+finally:
+    c.close()

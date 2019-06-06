@@ -6,5 +6,5 @@ COPY . .
 RUN dotnet publish -c Release
 
 FROM mcr.microsoft.com/dotnet/core/runtime:2.2
-COPY --from=builder bin/Release/netcoreapp2.2/publish/ /app/
+COPY --from=builder /app/bin/Release/netcoreapp2.1/publish/ /app/
 CMD dotnet /app/app.dll

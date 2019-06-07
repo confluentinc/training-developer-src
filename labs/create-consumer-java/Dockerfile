@@ -1,7 +1,6 @@
 FROM gradle:5.2.1-jdk11-slim AS builder
 WORKDIR /home/gradle/project
 COPY build.gradle ./
-COPY settings.gradle ./
 COPY src ./src
 USER root
 RUN gradle build

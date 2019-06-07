@@ -1,5 +1,4 @@
 plugins {
-  id 'com.commercehub.gradle.plugin.avro' version '0.16.0'
   id 'java'
   id 'application'
 }

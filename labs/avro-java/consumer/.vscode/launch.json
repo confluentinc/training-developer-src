@@ -12,10 +12,10 @@
         },
         {
             "type": "java",
-            "name": "Debug (Launch)-PrevDataConsumer<prev-data-java>",
+            "name": "Debug (Launch)-VehiclePositionConsumer<consumer>",
             "request": "launch",
-            "mainClass": "clients.PrevDataConsumer",
-            "projectName": "prev-data-java"
+            "mainClass": "clients.VehiclePositionConsumer",
+            "projectName": "consumer"
         }
     ]
 }

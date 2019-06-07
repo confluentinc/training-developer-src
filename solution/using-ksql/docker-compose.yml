@@ -121,7 +121,7 @@ services:
     command: /bin/sh -c "/start.sh"
 
   tools:
-    image: cnfltraining/training-tools
+    image: cnfltraining/training-tools:19.06
     hostname: tools
     networks:
       - confluent
@@ -129,8 +129,6 @@ services:
       - .:/root/confluent-dev/solution/
     command: /bin/sh
     tty: true
-    environment:
-      CLASSPATH: /usr/share/java/monitoring-interceptors/monitoring-interceptors-5.0.0.jar
 
 networks:
   confluent:

@@ -110,16 +110,15 @@ services:
       KSQL_KSQL_SERVER_UI_ENABLED: "false"
 
   tools:
-    image: cnfltraining/training-tools
+    image: cnfltraining/training-tools:19.06
     hostname: tools
     networks:
       - confluent
     volumes:
-      - .:/root/confluent-dev/solution/
+      - .:/root/confluent-dev/labs/
     command: /bin/sh
     tty: true
-    environment:
-      CLASSPATH: /usr/share/java/monitoring-interceptors/monitoring-interceptors-5.0.0.jar
+
 
 networks:
   confluent:

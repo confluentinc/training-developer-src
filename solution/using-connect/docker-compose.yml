@@ -122,5 +122,16 @@ services:
     ports:
       - 5432:5432
 
+
+  tools:
+    image: cnfltraining/training-tools:19.06
+    hostname: tools
+    networks:
+      - confluent
+    volumes:
+      - .:/root/confluent-dev/solution/
+    command: /bin/sh
+    tty: true
+
 networks:
   confluent:

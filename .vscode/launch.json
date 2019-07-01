@@ -1,0 +1,11 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - VehiclePositionTransformer",
+            "request": "launch",
+            "mainClass": "clients.VehiclePositionTransformer",
+            "projectName": "streams-app___"
+        }
+    ]
+}

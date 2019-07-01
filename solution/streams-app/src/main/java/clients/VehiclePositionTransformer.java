@@ -47,7 +47,7 @@ public class VehiclePositionTransformer {
         KStream<String,VehiclePosition> positions = builder
             .stream("vehicle-positions", Consumed.with(stringSerde, vpSerde));
         KStream<String,VehiclePosition> operator47Only =
-            positions.filter((key,value) -> value.oper == 47);            
+            positions.filter((key,value) -> value.VP.oper == 47);            
         operator47Only.to("vehicle-positions-oper-47",
             Produced.with(stringSerde, vpSerde));
         Topology topology = builder.build();

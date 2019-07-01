@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "CodeLens (Launch) - VehiclePositionTransformer",
+            "request": "launch",
+            "mainClass": "clients.VehiclePositionTransformer",
+            "projectName": "streams-app"
+        },
+        {
+            "type": "java",
             "name": "Debug (Launch) - Current File",
             "request": "launch",
             "mainClass": "${file}"

@@ -2,7 +2,7 @@ const sqlite3 = require('sqlite3').verbose();
 const mqtt = require('mqtt');
 
 let dbIsClose = false;
-let db = new sqlite3.Database('./db/vehicle-positions.db');
+let db = new sqlite3.Database('../db/vehicle-positions.db');
 db.run('CREATE TABLE IF NOT EXISTS vehicle_positions(key text, value text)');
 
 //<prefix><version>/journey/<temporal_type>/<transport_mode>/<operator_id>/<vehicle_number>/<route_id>/<direction_id>/<headsign>/<start_time>/<next_stop>/<geohash_level>/<geohash>/

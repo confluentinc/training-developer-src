@@ -26,8 +26,20 @@ async function sendMessages(){
             produceData(row.key, row.value);
             currentId = row.id;
         })
-        lastId = currentId;
+        if(lastId == currentId){
+            console.log('Reached end of DB. Starting over...');
+            lastId = 0;
+        } else {
+            lastId = currentId;
+            await sleep(1000);
+        }
     }
+}
+
+function sleep(ms){
+    return new Promise(resolve=>{
+        setTimeout(resolve,ms)
+    })
 }
 
 function produceData(key,value){

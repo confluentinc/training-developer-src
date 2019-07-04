@@ -35,8 +35,8 @@ public class Sample {
                             record.value());
                     JsonNode node = record.value();
                     String operator = node.get("OPER").asText();
-                    String designation = node.get("OPER").asText();
-                    String vehicleNo = node.get("OPER").asText();
+                    String designation = node.get("DESI").asText();
+                    String vehicleNo = node.get("VEH").asText();
                     int doorStatus = node.get("DRST").asInt();
                     // assume combination of operator and vehicleNo is unique
                     String key = operator + "|" + vehicleNo;

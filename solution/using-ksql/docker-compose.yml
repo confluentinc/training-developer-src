@@ -1,7 +1,7 @@
 version: "3.5"
 services:
   zookeeper:
-    image: confluentinc/cp-zookeeper:5.2.1
+    image: confluentinc/cp-zookeeper:5.3.0
     hostname: zookeeper
     networks:
       - confluent
@@ -10,7 +10,7 @@ services:
       ZOOKEEPER_TICK_TIME: 2000
 
   kafka:
-    image: "confluentinc/cp-enterprise-kafka:5.2.1"
+    image: "confluentinc/cp-enterprise-kafka:5.3.0"
     hostname: kafka
     networks:
       - confluent
@@ -27,7 +27,7 @@ services:
       CONFLUENT_METRICS_REPORTER_BOOTSTRAP_SERVERS: "kafka:9092"
 
   schema-registry:
-    image: "confluentinc/cp-schema-registry:5.2.1"
+    image: "confluentinc/cp-schema-registry:5.3.0"
     hostname: schema-registry
     networks:
       - confluent
@@ -39,7 +39,7 @@ services:
       SCHEMA_REGISTRY_LISTENERS: http://schema-registry:8081
 
   connect:
-    image: confluentinc/cp-kafka-connect:5.2.1
+    image: confluentinc/cp-kafka-connect:5.3.0
     hostname: connect
     restart: always
     ports:
@@ -71,7 +71,7 @@ services:
       CONNECT_CONSUMER_INTERCEPTOR_CLASSES: io.confluent.monitoring.clients.interceptor.MonitoringConsumerInterceptor
 
   control-center:
-    image: confluentinc/cp-enterprise-control-center:5.2.1
+    image: confluentinc/cp-enterprise-control-center:5.3.0
     hostname: control-center
     networks:
       - confluent
@@ -93,7 +93,7 @@ services:
       CONTROL_CENTER_CONNECT_CLUSTER: "connect:8083"
 
   ksql-server:
-    image: "confluentinc/cp-ksql-server:5.2.1"
+    image: "confluentinc/cp-ksql-server:5.3.0"
     hostname: ksql-server
     ports:
       - "8088:8088"
@@ -112,7 +112,7 @@ services:
       KSQL_KSQL_SERVER_UI_ENABLED: "false"
 
   base:
-    image: confluentinc/cp-enterprise-kafka:5.2.1
+    image: confluentinc/cp-enterprise-kafka:5.3.0
     hostname: base
     networks:
       - confluent

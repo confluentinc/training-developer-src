@@ -11,7 +11,7 @@ repositories {
 }
 
 jar {
-    baseName = 'prev-data-consumer'
+    baseName = 'microservice'
 }
 
 sourceCompatibility = 1.8

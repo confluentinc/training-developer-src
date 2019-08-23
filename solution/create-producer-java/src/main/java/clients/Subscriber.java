@@ -1,5 +1,7 @@
 package clients;
 
+import java.util.UUID;
+
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.eclipse.paho.client.mqttv3.*;
@@ -24,7 +26,10 @@ public class Subscriber implements MqttCallback {
         MqttConnectOptions conOpt = new MqttConnectOptions();
         conOpt.setCleanSession(true);
 
-        this.client = new MqttClient(this.host, this.clientId, new MemoryPersistence());
+        final String uuid = UUID.randomUUID().toString().replace("-", "");
+    
+        String clientId = this.clientId + "-" + uuid;
+        this.client = new MqttClient(this.host, clientId, new MemoryPersistence());
         this.client.setCallback(this);
         this.client.connect(conOpt);
         

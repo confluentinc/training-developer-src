@@ -1,6 +1,7 @@
 package clients;
 
 import java.io.IOException;
+import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -33,7 +34,10 @@ public class Subscriber implements MqttCallback {
         MqttConnectOptions conOpt = new MqttConnectOptions();
         conOpt.setCleanSession(true);
 
-        this.client = new MqttClient(this.host, this.clientId, new MemoryPersistence());
+        final String uuid = UUID.randomUUID().toString().replace("-", "");
+    
+        String clientId = this.clientId + "-" + uuid;
+        this.client = new MqttClient(this.host, clientId, new MemoryPersistence());
         this.client.setCallback(this);
         this.client.connect(conOpt);
         

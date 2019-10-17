@@ -5,8 +5,8 @@ let dbIsClose = false;
 let db = new sqlite3.Database('../db/vehicle-positions.db');
 db.run('CREATE TABLE IF NOT EXISTS vehicle_positions(id INTEGER PRIMARY KEY AUTOINCREMENT, key text, value text)');
 
-//<prefix><version>/journey/<temporal_type>/<transport_mode>/<operator_id>/<vehicle_number>/<route_id>/<direction_id>/<headsign>/<start_time>/<next_stop>/<geohash_level>/<geohash>/
-const topic = '/hfp/v1/journey/ongoing/+/+/+/+/+/+/+/+/+/#';
+//<prefix>/<version>/<journey_type>/<temporal_type>/<event_type>/<transport_mode>/<operator_id>/<vehicle_number>/<route_id>/<direction_id>/<headsign>/<start_time>/<next_stop>/<geohash_level>/<geohash>/#
+const topic = '/hfp/v2/journey/ongoing/vp/+/+/+/+/+/+/+/+/+/#';
 const client  = mqtt.connect('mqtts://mqtt.hsl.fi:8883');
 
 process.on('SIGINT', function() {
@@ -23,10 +23,9 @@ client.on('connect', function () {
 
 client.on('message', (topic, message) => {
     try {
-        const vehicle_position = JSON.parse(message).VP;
-        const key = vehicle_position.oper + "/" + vehicle_position.veh;
-        const data = JSON.stringify(vehicle_position);
-        const value = `{"VP":${data}}`;
+        const vehicle_position = JSON.parse(message);
+        const key = topic;
+        const value = JSON.stringify(vehicle_position);
         persistValue(key, value);
     } catch (err) {
         client.end(true);

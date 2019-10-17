@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Gabriel N. Schenker",
+  "author": "Confluent",
   "license": "ISC",
   "dependencies": {
     "kafkajs": "^1.9.3",

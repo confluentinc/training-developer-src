@@ -20,7 +20,7 @@ public class Subscriber implements MqttCallback {
     private final int qos = 1;
     private String host = "ssl://mqtt.hsl.fi:8883";
     private String clientId = "MQTT-Java-Example";
-    private String topic = "/hfp/v1/journey/ongoing/#";
+    private String topic = "/hfp/v2/journey/ongoing/vp/#";
     private String kafka_topic = "vehicle-positions-avro";
     private MqttClient client;
 
@@ -72,8 +72,10 @@ public class Subscriber implements MqttCallback {
         String json = new String(payload);
         VehiclePosition pos =  mapper.readValue(json, VehiclePosition.class);
         VehicleValues vv = pos.VP;
+
         return new PositionValue(vv.desi, vv.dir, vv.oper, vv.veh, vv.tst,
             vv.tsi, vv.spd, vv.hdg, vv.lat, vv.longitude, vv.acc, vv.dl,
-            vv.odo, vv.drst, vv.oday, vv.jrn, vv.line, vv.start);
+            vv.odo, vv.drst, vv.oday, vv.jrn, vv.line, vv.start, vv.loc,
+            vv.stop, vv.route, vv.occu, vv.seq);
     }
 }

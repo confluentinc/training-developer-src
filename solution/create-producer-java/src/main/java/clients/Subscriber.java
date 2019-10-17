@@ -12,7 +12,7 @@ public class Subscriber implements MqttCallback {
     private final int qos = 1;
     private String host = "ssl://mqtt.hsl.fi:8883";
     private String clientId = "MQTT-Java-Example";
-    private String topic = "/hfp/v1/journey/ongoing/#";
+    private String topic = "/hfp/v2/journey/ongoing/vp/#";
     private String kafka_topic = "vehicle-positions";
     private MqttClient client;
 

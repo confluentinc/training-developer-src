@@ -12,3 +12,8 @@ experiment/
 .settings
 node_modules/
 .DS_Store
+.idea/
+gradle/
+gradlew*
+package-lock.json
+offset_*

@@ -54,12 +54,12 @@ public class VehiclePositionConsumer {
     private static ConsumerRebalanceListener createListener(KafkaConsumer<String, String> consumer){
         return new ConsumerRebalanceListener() {
             @Override
-			public void onPartitionsRevoked(Collection<TopicPartition> partitions) {
+            public void onPartitionsRevoked(Collection<TopicPartition> partitions) {
                 // nothing to do...
-			}
+            }
             
             @Override
-			public void onPartitionsAssigned(Collection<TopicPartition> partitions) {
+            public void onPartitionsAssigned(Collection<TopicPartition> partitions) {
                 for (TopicPartition partition : partitions) {
                     try{
                         if (Files.exists(Paths.get(OFFSET_FILE_PREFIX + partition.partition()))) {
@@ -72,7 +72,7 @@ public class VehiclePositionConsumer {
                         System.out.printf("ERR: Could not read offset from file.\n");
                     }
                 }
-			}
-		};
+            }
+        };
     }
 }

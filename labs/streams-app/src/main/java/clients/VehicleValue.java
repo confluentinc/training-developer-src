@@ -1,5 +1,7 @@
 package clients;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class VehicleValue {
     public String desi;
     public String dir;
@@ -10,18 +12,9 @@ public class VehicleValue {
     public float spd;
     public int hdg;
     public float lat;
-    public float long$;
-    
-    // due to the fact that "long" is a reserved word in Java
-    // we have to implement the attribute as a property with
-    // getter and setter!
-    private float longitude;
-    public void setLong(float longitude){
-        this.longitude = longitude;
-    }
-    public float getLong(){
-        return this.longitude;
-    }
+
+    @JsonProperty("long")
+    public float longitude;
 
     public float acc;
     public int dl;
@@ -31,4 +24,9 @@ public class VehicleValue {
     public int jrn;
     public int line;
     public String start;
+    public String loc;
+    public String stop;
+    public String route;
+    public int occu;
+    public int seq;
 }

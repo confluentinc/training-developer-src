@@ -13,7 +13,7 @@ client.on('connect', function () {
 let count = 0;
 
 client.on('message', function (topic, message) {
-    const vehicle_position = JSON.parse(message);
+    const vehicle_position = JSON.parse(message).VP;
 
     //Skip vehicles with invalid location
     if (!vehicle_position.lat || !vehicle_position.long) {

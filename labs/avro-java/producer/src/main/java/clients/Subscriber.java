@@ -3,7 +3,6 @@ package clients;
 import java.io.IOException;
 import java.util.UUID;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.apache.kafka.clients.producer.KafkaProducer;

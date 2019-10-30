@@ -15,7 +15,7 @@ This is plan B if the MQTT source (https://digitransit.fi/en/developers/apis/4-r
 +
 [source,subs="verbatim,quotes,attributes"]
 --
-$ *docker image build -t cnfltraining/vp-producer-fallback:1.0*
+$ *docker image build -t cnfltraining/vp-producer-fallback:v2*
 --
 
-. Use the image `cnfltraining/vp-producer-fallback:1.0` instead of the image `cnfltraining/vp-producer:1.0` if the MQTT source does not work.
+. Use the image `cnfltraining/vp-producer-fallback:v2` instead of the image `cnfltraining/vp-producer:v2` if the MQTT source does not work.

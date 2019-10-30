@@ -20,7 +20,7 @@
         {"name": "jrn", "type":  "int"},
         {"name": "line", "type":  "int"},
         {"name": "start", "type":  "string"},
-        {"name": "location", "type":  "string"},
+        {"name": "loc", "type":  "string"},
         {"name": "stop", "type":  ["null", "string"]},
         {"name": "route", "type":  "string"},
         {"name": "occu", "type":  "int"},

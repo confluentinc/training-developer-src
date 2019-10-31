@@ -15,3 +15,5 @@ node_modules/
 .idea/
 gradle/
 gradlew*
+package-lock.json
+offset_*

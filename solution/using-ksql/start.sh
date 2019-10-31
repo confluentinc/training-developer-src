@@ -4,13 +4,13 @@ cub kafka-ready -b kafka:9092 1 300
 
 echo Creating the topics...
 
-kafka-topics --zookeeper zookeeper:2181 \
+kafka-topics --bootstrap-server kafka:9092 \
     --create \
     --topic vehicle-positions \
     --partitions 6 \
     --replication-factor 1
 
-kafka-topics --zookeeper zookeeper:2181 \
+kafka-topics --bootstrap-server kafka:9092 \
     --create \
     --topic operators \
     --partitions 1 \

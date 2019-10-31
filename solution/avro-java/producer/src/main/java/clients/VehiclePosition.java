@@ -45,5 +45,15 @@ public class VehiclePosition {
         public int line;
         @JsonProperty("start")
         public String start;
+        @JsonProperty("loc")
+        public String loc;
+        @JsonProperty("stop")
+        public String stop;
+        @JsonProperty("route")
+        public String route;
+        @JsonProperty("occu")
+        public int occu;
+        @JsonProperty("seq")
+        public int seq;
     }
 }

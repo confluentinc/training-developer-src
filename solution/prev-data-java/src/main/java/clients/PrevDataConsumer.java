@@ -27,14 +27,14 @@ public class PrevDataConsumer {
 
         ConsumerRebalanceListener listener = new ConsumerRebalanceListener() {
             @Override
-			public void onPartitionsRevoked(Collection<TopicPartition> partitions) {
+            public void onPartitionsRevoked(Collection<TopicPartition> partitions) {
                 // nothing to do...
-			}
+            }
             
             @Override
-			public void onPartitionsAssigned(Collection<TopicPartition> partitions) {
-				consumer.seekToBeginning(partitions);
-			}
+            public void onPartitionsAssigned(Collection<TopicPartition> partitions) {
+                consumer.seekToBeginning(partitions);
+            }
         };
         
         try {

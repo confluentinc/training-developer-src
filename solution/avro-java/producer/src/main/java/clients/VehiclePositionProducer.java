@@ -6,6 +6,7 @@ import org.apache.kafka.clients.producer.ProducerConfig;
 import org.eclipse.paho.client.mqttv3.*;
 
 import io.confluent.kafka.serializers.KafkaAvroSerializer;
+import io.confluent.kafka.serializers.KafkaAvroSerializerConfig;
 
 import solution.model.PositionKey;
 import solution.model.PositionValue;
@@ -19,7 +20,7 @@ public class VehiclePositionProducer {
         settings.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "kafka:9092");
         settings.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, KafkaAvroSerializer.class);
         settings.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, KafkaAvroSerializer.class);
-        settings.put("schema.registry.url", "http://schema-registry:8081");
+        settings.put(KafkaAvroSerializerConfig.SCHEMA_REGISTRY_URL_CONFIG, "http://schema-registry:8081");
 
         final KafkaProducer<PositionKey, PositionValue> producer = new KafkaProducer<>(settings);
         

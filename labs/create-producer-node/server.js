@@ -1,7 +1,7 @@
 const mqtt = require('mqtt');
 
-//<prefix><version>/journey/<temporal_type>/<transport_mode>/<operator_id>/<vehicle_number>/<route_id>/<direction_id>/<headsign>/<start_time>/<next_stop>/<geohash_level>/<geohash>/
-const topic = '/hfp/v1/journey/ongoing/+/+/+/+/+/+/+/+/+/#';
+//<prefix>/<version>/<journey_type>/<temporal_type>/<event_type>/<transport_mode>/<operator_id>/<vehicle_number>/<route_id>/<direction_id>/<headsign>/<start_time>/<next_stop>/<geohash_level>/<geohash>/#
+const topic = '/hfp/v2/journey/ongoing/vp/+/+/+/+/+/+/+/+/+/#';
 
 const client  = mqtt.connect('mqtts://mqtt.hsl.fi:8883');
 

@@ -6,6 +6,7 @@ import org.apache.kafka.clients.producer.ProducerConfig;
 import org.eclipse.paho.client.mqttv3.*;
 
 import io.confluent.kafka.serializers.KafkaAvroSerializer;
+import io.confluent.kafka.serializers.KafkaAvroSerializerConfig;
 
 import solution.model.PositionKey;
 import solution.model.PositionValue;

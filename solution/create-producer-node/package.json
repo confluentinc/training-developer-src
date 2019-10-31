@@ -1,6 +1,6 @@
 {
   "name": "create-producer",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Simple Kafka Producer",
   "main": "server.js",
   "scripts": {
@@ -11,10 +11,10 @@
     "Kafka",
     "producer"
   ],
-  "author": "Gabriel N. Schenker",
+  "author": "Confluent",
   "license": "ISC",
   "dependencies": {
     "mqtt": "^2.18.8",
-    "node-rdkafka": "^2.5.1"
+    "node-rdkafka": "^2.7.1"
   }
 }

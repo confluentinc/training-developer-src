@@ -23,7 +23,7 @@ public class VehiclePositionConsumer {
         settings.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, KafkaAvroDeserializer.class);
         settings.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, KafkaAvroDeserializer.class);
         settings.put(KafkaAvroDeserializerConfig.SPECIFIC_AVRO_READER_CONFIG, "true");
-        settings.put("schema.registry.url", "http://schema-registry:8081");
+        settings.put(KafkaAvroDeserializerConfig.SCHEMA_REGISTRY_URL_CONFIG, "http://schema-registry:8081");
 
         KafkaConsumer<PositionKey, PositionValue> consumer = new KafkaConsumer<>(settings);
         try {

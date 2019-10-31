@@ -8,18 +8,22 @@
         {"name": "veh", "type":  "int"},
         {"name": "tst", "type":  "string"},
         {"name": "tsi", "type":  "long"},
-        {"name": "spd", "type":  "double"},
-        {"name": "hdg", "type":  "int"},
-        {"name": "lat", "type":  "double"},
-        {"name": "long", "type":  "double"},
-        {"name": "acc", "type":  "double"},
+        {"name": "spd", "type":  ["null", "double"]},
+        {"name": "hdg", "type":  ["null", "int"]},
+        {"name": "lat", "type":  ["null", "double"]},
+        {"name": "long", "type":  ["null", "double"]},
+        {"name": "acc", "type":  ["null", "double"]},
         {"name": "dl", "type":  "int"},
         {"name": "odo", "type":  "int"},
         {"name": "drst", "type":  "int"},
         {"name": "oday", "type":  "string"},
         {"name": "jrn", "type":  "int"},
         {"name": "line", "type":  "int"},
-        {"name": "start", "type":  "string"}
+        {"name": "start", "type":  "string"},
+        {"name": "loc", "type":  "string"},
+        {"name": "stop", "type":  ["null", "string"]},
+        {"name": "route", "type":  "string"},
+        {"name": "occu", "type":  "int"},
+        {"name": "seq", "type":  "int"}
     ]
 }
-   

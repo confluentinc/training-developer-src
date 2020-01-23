@@ -1,0 +1,7 @@
+{"namespace": "clients.avro",
+    "type": "record",
+    "name": "PositionKey",
+    "fields": [
+        {"name": "key", "type": "string"}
+    ]
+}

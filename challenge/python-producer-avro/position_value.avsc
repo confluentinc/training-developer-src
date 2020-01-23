@@ -1,0 +1,8 @@
+{"namespace": "clients.avro",
+    "type": "record",
+    "name": "PositionValue",
+    "fields": [
+        {"name": "latitude", "type": "double"},
+        {"name": "longitude", "type": "double"}
+    ]
+}

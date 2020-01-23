@@ -1,0 +1,283 @@
+---
+version: '2'
+services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:5.4.0
+    container_name: zookeeper
+    ports:
+      - 2181:2181
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+
+  kafka:
+    image: confluentinc/cp-enterprise-kafka:5.4.0
+    container_name: kafka
+    ports:
+      - 9092:9092
+    environment:
+      KAFKA_BROKER_ID: 101
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_METRIC_REPORTERS: "io.confluent.metrics.reporter.ConfluentMetricsReporter"
+      CONFLUENT_METRICS_REPORTER_BOOTSTRAP_SERVERS: "kafka:9092"
+
+  producer1:
+    image: cnfltraining/java-producer-avro:1.0
+    container_name: producer1
+    environment:
+      DRIVER_ID: driver-1
+    command: "bash -c 'until curl -fsSL schema-registry:8081/subjects/ ; \
+                      do sleep 1; \
+                      echo waiting for schema; \
+                      done; \
+                      java -classpath \"lib/*\" clients.Producer'"
+
+  producer2:
+    image: cnfltraining/java-producer-avro:1.0
+    container_name: producer2
+    environment:
+      DRIVER_ID: driver-2
+    command: "bash -c 'until curl -fsSL schema-registry:8081/subjects/ ; \
+                      do sleep 1; \
+                      echo waiting for schema; \
+                      done; \
+                      java -classpath \"lib/*\" clients.Producer'"
+
+  producer3:
+    image: cnfltraining/java-producer-avro:1.0
+    container_name: producer3
+    environment:
+      DRIVER_ID: driver-3
+    command: "bash -c 'until curl -fsSL schema-registry:8081/subjects/ ; \
+                      do sleep 1; \
+                      echo waiting for schema; \
+                      done; \
+                      java -classpath \"lib/*\" clients.Producer'"
+                        
+  producer4:
+    image: cnfltraining/java-producer-avro:1.0
+    container_name: producer4
+    environment:
+      DRIVER_ID: driver-4
+    command: "bash -c 'until curl -fsSL schema-registry:8081/subjects/ ; \
+                      do sleep 1; \
+                      echo waiting for schema; \
+                      done; \
+                      java -classpath \"lib/*\" clients.Producer'"
+
+  producer5:
+    image: cnfltraining/java-producer-avro:1.0
+    container_name: producer5
+    environment:
+      DRIVER_ID: driver-5
+    command: "bash -c 'until curl -fsSL schema-registry:8081/subjects/ ; \
+                      do sleep 1; \
+                      echo waiting for schema; \
+                      done; \
+                      java -classpath \"lib/*\" clients.Producer'"
+
+  webserver:
+    image: cnfltraining/node-webserver:1.0
+    container_name: webserver
+    hostname: webserver
+    ports:
+      - 3001:3000
+    command: "bash -c 'until kafkacat -b kafka:9092 -L | grep driver-positions; \
+                      do sleep 1; \
+                      echo waiting for topic; \
+                      done; \
+                      npm run start'"
+
+  webserver-avro:
+    image: cnfltraining/node-webserver-avro:1.0
+    container_name: webserver-avro
+    hostname: webserver-avro
+    ports:
+      - 3002:3000
+    environment:
+      TOPIC: driver-positions-avro
+    command: "bash -c 'until curl -fsSL schema-registry:8081/subjects/driver-positions-avro-value/versions/1 | grep schema ; \
+                      do sleep 1; \
+                      echo waiting for schema; \
+                      done; \
+                      npm run start'"
+
+  webserver-pyavro:
+    image: cnfltraining/node-webserver-avro:1.0
+    container_name: webserver-pyavro
+    hostname: webserver-pyavro
+    ports:
+      - 3012:3000
+    environment:
+      TOPIC: driver-positions-pyavro
+    command: "bash -c 'until curl -fsSL schema-registry:8081/subjects/driver-positions-pyavro-value/versions/1 | grep schema ; \
+                      do sleep 1; \
+                      echo waiting for schema; \
+                      done; \
+                      npm run start'"
+
+  webserver-streams:
+    image: cnfltraining/node-webserver-avro:1.0
+    container_name: webserver-streams
+    hostname: webserver-streams
+    ports:
+      - 3003:3000
+    environment:
+      TOPIC: driver-distance-avro
+    command: "bash -c 'until curl -fsSL schema-registry:8081/subjects/driver-distance-avro-value/versions/1 | grep schema ; \
+                      do sleep 1; \
+                      echo waiting for schema; \
+                      done; \
+                      npm run start'"
+
+  webserver-ksql:
+    image: cnfltraining/node-webserver-avro:1.0
+    container_name: webserver-ksql
+    hostname: webserver-ksql
+    ports:
+      - 3004:3000
+    environment:
+      TOPIC: driver-augmented-avro
+    command: "bash -c 'until curl -fsSL schema-registry:8081/subjects/driver-augmented-avro-value/versions/1 | grep schema ; \
+                      do sleep 1; \
+                      echo waiting for schema; \
+                      done; \
+                      npm run start'"
+
+  schema-registry:
+    image: confluentinc/cp-schema-registry:5.4.0
+    container_name: schema-registry
+    ports:
+      - "8081:8081"
+    environment:
+      SCHEMA_REGISTRY_HOST_NAME: schema-registry
+      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: 'kafka:9092'
+
+  ksql-server:
+    image: confluentinc/cp-ksql-server:5.4.0
+    container_name: ksql-server
+    ports:
+      - "8088:8088"
+    environment:
+      KSQL_CONFIG_DIR: "/etc/ksql"
+      KSQL_LOG4J_OPTS: "-Dlog4j.configuration=file:/etc/ksql/log4j-rolling.properties"
+      KSQL_BOOTSTRAP_SERVERS: "kafka:9092"
+      KSQL_HOST_NAME: ksql-server
+      KSQL_APPLICATION_ID: "dev-class"
+      KSQL_LISTENERS: "http://0.0.0.0:8088"
+      KSQL_CACHE_MAX_BYTES_BUFFERING: 0
+      KSQL_KSQL_SCHEMA_REGISTRY_URL: "http://schema-registry:8081"
+      KSQL_PRODUCER_INTERCEPTOR_CLASSES: "io.confluent.monitoring.clients.interceptor.MonitoringProducerInterceptor"
+      KSQL_CONSUMER_INTERCEPTOR_CLASSES: "io.confluent.monitoring.clients.interceptor.MonitoringConsumerInterceptor"
+
+  postgres:
+    image: postgres:11.2-alpine
+    container_name: postgres
+    volumes:
+      - ./postgres/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+    ports:
+      - 5432:5432
+
+  connect:
+    image: confluentinc/cp-kafka-connect:5.4.0
+    container_name: connect
+    restart: always
+    ports:
+      - "8083:8083"
+    environment:
+      CONNECT_BOOTSTRAP_SERVERS: kafka:9092
+      CONNECT_GROUP_ID: "connect"
+      CONNECT_CONFIG_STORAGE_TOPIC: "connect-config"
+      CONNECT_OFFSET_STORAGE_TOPIC: "connect-offsets"
+      CONNECT_STATUS_STORAGE_TOPIC: "connect-status"
+      CONNECT_REPLICATION_FACTOR: 1
+      CONNECT_CONFIG_STORAGE_REPLICATION_FACTOR: 1
+      CONNECT_OFFSET_STORAGE_REPLICATION_FACTOR: 1
+      CONNECT_STATUS_STORAGE_REPLICATION_FACTOR: 1
+      CONNECT_KEY_CONVERTER: "org.apache.kafka.connect.storage.StringConverter"
+      CONNECT_VALUE_CONVERTER: "io.confluent.connect.avro.AvroConverter"
+      CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL: "http://schema-registry:8081"
+      CONNECT_INTERNAL_KEY_CONVERTER: "org.apache.kafka.connect.json.JsonConverter"
+      CONNECT_INTERNAL_VALUE_CONVERTER: "org.apache.kafka.connect.json.JsonConverter"
+      CONNECT_PLUGIN_PATH: /usr/share/java
+      CONNECT_REST_ADVERTISED_HOST_NAME: "connect"
+      CONNECT_PRODUCER_INTERCEPTOR_CLASSES: io.confluent.monitoring.clients.interceptor.MonitoringProducerInterceptor
+      CONNECT_CONSUMER_INTERCEPTOR_CLASSES: io.confluent.monitoring.clients.interceptor.MonitoringConsumerInterceptor
+
+  control-center:
+    image: confluentinc/cp-enterprise-control-center:5.4.0
+    container_name: control-center
+    ports:
+      - "9021:9021"
+    environment:
+      CONTROL_CENTER_BOOTSTRAP_SERVERS: kafka:9092
+      CONTROL_CENTER_ZOOKEEPER_CONNECT: zookeeper:2181
+      CONTROL_CENTER_REPLICATION_FACTOR: 1
+      CONTROL_CENTER_MONITORING_INTERCEPTOR_TOPIC_REPLICATION: 1
+      CONTROL_CENTER_INTERNAL_TOPICS_REPLICATION: 1
+      CONTROL_CENTER_COMMAND_TOPIC_REPLICATION: 1
+      CONTROL_CENTER_METRICS_TOPIC_REPLICATION: 1
+      CONTROL_CENTER_STREAMS_NUM_STREAM_THREADS: 1
+      CONTROL_CENTER_STREAMS_CONSUMER_REQUEST_TIMEOUT_MS: "960032"
+      CONTROL_CENTER_SCHEMA_REGISTRY_URL: "http://schema-registry:8081"
+      CONTROL_CENTER_CONNECT_CLUSTER: "connect:8083"
+      CONTROL_CENTER_KSQL_URL: "http://ksql-server:8088"
+      
+  create-topics:
+    image: confluentinc/cp-enterprise-kafka:5.4.0
+    container_name: create-topics
+    command: "bash -c 'echo Waiting for Kafka to be ready... && \
+                       cub kafka-ready -b kafka:9092 1 300 && \
+                       echo Creating topics... && \
+                       kafka-topics --bootstrap-server kafka:9092 --create --topic driver-positions --partitions 3 --replication-factor 1 && \
+                       kafka-topics --bootstrap-server kafka:9092 --create --topic driver-avro --partitions 3 --replication-factor 1 --config cleanup.policy=compact && \
+                       kafka-topics --bootstrap-server kafka:9092 --create --topic driver-positions-avro --partitions 3 --replication-factor 1 && \
+                       kafka-topics --bootstrap-server kafka:9092 --create --topic driver-distance-avro --partitions 3 --replication-factor 1 && \
+                       kafka-topics --bootstrap-server kafka:9092 --create --topic driver-augmented-avro --partitions 3 --replication-factor 1'"
+
+  create-connector:
+    image: confluentinc/cp-enterprise-kafka:5.4.0
+    container_name: create-connector
+    command:
+      - bash
+      - -c 
+      - |
+        until curl -fsSL http://connect:8083/ ; do
+          sleep 1
+          echo waiting for connect
+        done
+        curl -s -X POST -H "Content-Type: application/json" --data '{
+            "name": "Driver-Connector",
+            "config": {
+                "connector.class": "io.confluent.connect.jdbc.JdbcSourceConnector",
+                "connection.url": "jdbc:postgresql://postgres:5432/postgres",
+                "connection.user": "postgres",
+                "table.whitelist": "driver",
+                "topic.prefix": "",
+                "mode":"timestamp+incrementing",
+                "incrementing.column.name": "id",
+                "timestamp.column.name": "timestamp",
+                "table.types": "TABLE",
+                "numeric.mapping": "best_fit",
+                "transforms": "suffix,createKey,extractKey",
+                "transforms.suffix.type":"org.apache.kafka.connect.transforms.RegexRouter",
+                "transforms.suffix.regex":"(.*)",
+                "transforms.suffix.replacement":"$$1-avro",
+                "transforms.createKey.type": "org.apache.kafka.connect.transforms.ValueToKey",
+                "transforms.createKey.fields": "driverkey",
+                "transforms.extractKey.type": "org.apache.kafka.connect.transforms.ExtractField$$Key",
+                "transforms.extractKey.field": "driverkey"
+            }
+        }' http://connect:8083/connectors
+
+  # tools:
+  #   image: cnfltraining/training-tools:5.4
+  #   container_name: tools
+  #   hostname: tools
+  #   volumes:
+  #     - .:/root/confluent-dev/
+  #   command: /bin/sh
+  #   tty: true
+

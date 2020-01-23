@@ -1,0 +1,21 @@
+{
+  "name": "node-webserver",
+  "version": "1.0.0",
+  "description": "Dev webserver",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "pretest": "eslint server.js"
+  },
+  "author": "Confluent Training",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "node-rdkafka": "^2.7.4",
+    "socket.io": "^2.3.0"
+  },
+  "devDependencies": {
+    "eslint": "^6.7.2",
+    "eslint-config-google": "^0.14.0"
+  }
+}

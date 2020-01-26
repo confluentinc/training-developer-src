@@ -11,43 +11,43 @@ CREATE TABLE driver (
 );
 
 INSERT INTO driver (driverkey, firstname, lastname, make, model) VALUES
-    ('driver-1', 'Randall', 'Palmer', 'Toyota', 'Topic');
+    ('driver-1', 'Randall', 'Palmer', 'Toyota', 'Offset');
 
 INSERT INTO driver (driverkey, firstname, lastname, make, model) VALUES
-    ('driver-2', 'Razı', 'İnönü', 'Nissan', 'Offset');
+    ('driver-2', 'Razı', 'İnönü', 'Nissan', 'Narkhede');
 
 INSERT INTO driver (driverkey, firstname, lastname, make, model) VALUES
-    ('driver-3', '美加子', '桐山', 'VW', 'Broker');
+    ('driver-3', '美加子', '桐山', 'Subaru', 'Shapira');
 
 INSERT INTO driver (driverkey, firstname, lastname, make, model) VALUES
-    ('driver-4', 'David', 'Chandler', 'VW', 'Broker');
+    ('driver-4', 'David', 'Chandler', 'Subaru', 'Shapira');
 
 INSERT INTO driver (driverkey, firstname, lastname, make, model) VALUES
-    ('driver-5', 'James', 'King', 'Nissan', 'Offset');
+    ('driver-5', 'James', 'King', 'Nissan', 'Narkhede');
 
 INSERT INTO driver (driverkey, firstname, lastname, make, model) VALUES
-    ('driver-6', 'William', 'Peterson', 'GM', 'Compaction');
+    ('driver-6', 'William', 'Peterson', 'GM', 'Berglund');
 
 INSERT INTO driver (driverkey, firstname, lastname, make, model) VALUES
-    ('driver-7', 'Matthew', 'Reyes', 'Hyundai', 'Replica');
+    ('driver-7', 'Matthew', 'Reyes', 'Hyundai', 'Palino');
 
 INSERT INTO driver (driverkey, firstname, lastname, make, model) VALUES
-    ('driver-8', 'Tezol', 'Manço', 'Nissan', 'Offset');
+    ('driver-8', 'Tezol', 'Manço', 'Nissan', 'Narkhede');
 
 INSERT INTO driver (driverkey, firstname, lastname, make, model) VALUES
-    ('driver-9', '加奈', '小林', 'GM', 'Compaction');
+    ('driver-9', '加奈', '小林', 'GM', 'Berglund');
 
 INSERT INTO driver (driverkey, firstname, lastname, make, model) VALUES
-    ('driver-10', 'Aaron', 'Gill', 'Hyundai', 'Replica');
+    ('driver-10', 'Aaron', 'Gill', 'Hyundai', 'Palino');
 
 INSERT INTO driver (driverkey, firstname, lastname, make, model) VALUES
-    ('driver-11', 'Kathy', 'White', 'Nissan', 'Offset');
+    ('driver-11', 'Kathy', 'White', 'Nissan', 'Narkhede');
 
 INSERT INTO driver (driverkey, firstname, lastname, make, model) VALUES
-    ('driver-12', 'Brenda', 'Schmidt', 'GM', 'Compaction');
+    ('driver-12', 'Brenda', 'Schmidt', 'GM', 'Berglund');
 
 INSERT INTO driver (driverkey, firstname, lastname, make, model) VALUES
-    ('driver-13', 'Kevin', 'Cook', 'Hyundai', 'Replica');
+    ('driver-13', 'Kevin', 'Cook', 'Hyundai', 'Palino');
 
 INSERT INTO driver (driverkey, firstname, lastname, make, model) VALUES
-    ('driver-14', 'Anna', 'Salazar', 'VW', 'Broker');
+    ('driver-14', 'Anna', 'Salazar', 'Subaru', 'Shapira');

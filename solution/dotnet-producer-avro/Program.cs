@@ -89,7 +89,7 @@ namespace DotnetProducerAvro
 
     /*
     Confirm the topic is being written to with kafka-avro-console-consumer
-    
+
     kafka-avro-console-consumer --bootstrap-server kafka:9092 \
     --property schema.registry.url=http://schema-registry:8081 \
     --topic driver-positions-avro --property print.key=true \

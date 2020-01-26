@@ -1,9 +1,12 @@
 package clients;
 
+import io.confluent.monitoring.clients.interceptor.MonitoringProducerInterceptor;
+
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Properties;
 
 import org.apache.kafka.clients.producer.KafkaProducer;
@@ -35,7 +38,7 @@ public class Producer {
     settings.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
     settings.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
     settings.put(ProducerConfig.INTERCEPTOR_CLASSES_CONFIG,
-        "io.confluent.monitoring.clients.interceptor.MonitoringProducerInterceptor");
+        List.of(MonitoringProducerInterceptor.class));
 
     final KafkaProducer<String, String> producer = new KafkaProducer<>(settings);
     
@@ -56,8 +59,9 @@ public class Producer {
       // TODO: populate the message object
       final ProducerRecord<String, String> record = new ProducerRecord<>(KAFKA_TOPIC, key, value);
       // TODO: write the lat/long position to a Kafka topic
+      // TODO: print the key and value in the callback lambda
       producer.send(record, (md, e) -> {
-        System.out.println(String.format("Sent Key:%s Value:%s", key, value));
+        System.out.printf("Sent Key:%s Value:%s\n", key, value);
       });
       Thread.sleep(1000);
       pos = (pos + 1) % rows.length;

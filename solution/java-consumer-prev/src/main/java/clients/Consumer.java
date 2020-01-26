@@ -1,10 +1,12 @@
 package clients;
 
+import io.confluent.monitoring.clients.interceptor.MonitoringConsumerInterceptor;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
@@ -34,7 +36,7 @@ public class Consumer {
     settings.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
     settings.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
     settings.put(ConsumerConfig.INTERCEPTOR_CLASSES_CONFIG,
-        "io.confluent.monitoring.clients.interceptor.MonitoringConsumerInterceptor");
+        List.of(MonitoringConsumerInterceptor.class));
 
     final KafkaConsumer<String, String> consumer = new KafkaConsumer<>(settings);
     
@@ -57,7 +59,7 @@ public class Consumer {
         }
 
         // TODO: Request the offsets for the start timestamp
-        final Map<TopicPartition, OffsetAndTimestamp> startOffsets = 
+        final Map<TopicPartition, OffsetAndTimestamp> startOffsets =
             consumer.offsetsForTimes(timestampsToSearch);
         // Seek each partition to the new offset
         for (Map.Entry<TopicPartition, OffsetAndTimestamp> entry : startOffsets.entrySet()) {

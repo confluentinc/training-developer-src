@@ -51,6 +51,11 @@ while True:
     # Trigger any available delivery report callbacks from previous produce() calls
     producer.poll(0)
     #TODO: write the lat/long position to a Kafka topic
-    producer.produce(???
+    #TODO: configure delivery_report as a callback to print the key and value
+    producer.produce(
+        ???,
+        ???,
+        ???,
+        on_delivery=???)
     sleep(1)
     pos = (pos + 1) % len(lines)

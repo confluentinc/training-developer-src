@@ -5,102 +5,117 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
+    <!-- highlight.js -->
+    <link rel="stylesheet"
+          href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/vs2015.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="css/bootstrap.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="./css/bootstrap.min.css" crossorigin="anonymous">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
        integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
        crossorigin=""/>
 
     <title>Exercise</title>
     <style>
-      #mapid { height: 500px; width: 500px }
-      body {
-        padding-top: 2rem;
-      }
+    #mapid { height: 468px; width: 100%; }
+    @media only screen and (max-width: 500px) {
+      #mapid { height: 234px; width: 100%; }
+    }
     </style>
-  </head>
-  <body>
-     <main role="main" class="container">
-       <!-- Example row of columns -->
-       <div class="row">
-         <div class="col-md-6">
-           <div id="mapid"></div>
-         </div>
-         <div class="col-md-6">
-           <ul class="nav nav-tabs" id="myTab" role="tablist">
-            <li class="nav-item">
-              <a class="nav-link active" id="live-tab" data-toggle="tab" href="#live" role="tab" aria-controls="live" aria-selected="true">Live Data</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" id="plot-tab" data-toggle="tab" href="#plot" role="tab" aria-controls="plot" aria-selected="false">Plot Data</a>
-            </li>
-          </ul>
-          <div class="tab-content" id="myTabContent">
-            <div class="tab-pane fade show active" id="live" role="tabpanel" aria-labelledby="live-tab">
-              <div id="json"></div>
-            </div>
-            <div class="tab-pane fade" id="plot" role="tabpanel" aria-labelledby="plot-tab">
-              
-              <div class="form-group">
-                <textarea class="form-control" id="manual" rows="10">
-driver-1,47.61424964161,-122.33030816845019
-driver-2,47.61350964731066,-122.33208246997802
-driver-1,47.61420261508394,-122.3304215525644
-driver-2,47.613462507553486,-122.33219574693297
-                </textarea>
+    </head>
+    <body>
+      <main role="main" class="container">
+        <div class="row no-gutters">
+          <div class="col-md-6" style="padding-top: 1rem;">
+            <div id="mapid"></div>
+          </div>
+          <div class="col-md-6" style="padding-top: 1rem;padding-left:10px">
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+              <li class="nav-item">
+                <a class="nav-link active" id="live-tab" data-toggle="tab" href="#live" role="tab" aria-controls="live"
+                  aria-selected="true">Live Data</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="plot-tab" data-toggle="tab" href="#plot" role="tab" aria-controls="plot"
+                  aria-selected="false">Plot Data</a>
+              </li>
+            </ul>
+            <div class="tab-content" id="myTabContent">
+              <div class="tab-pane show active" id="live" role="tabpanel" aria-labelledby="live-tab">
+                <div id="json"></div>
               </div>
-              
-              <button class="btn btn-primary" id="view">view</button>
-              
+              <div class="tab-pane" id="plot" role="tabpanel" aria-labelledby="plot-tab">
+
+                <div class="form-group">
+                  <textarea class="form-control" id="manual" rows="10"></textarea>
+                </div>
+                <button class="btn btn-primary" id="view">view</button>
+              </div>
             </div>
           </div>
-         </div>
-       </div>
-     </main><!-- /.container -->
+        </div>
+      </main><!-- /.container -->
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="/socket.io/socket.io.js"></script>
+    <script src="./js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
     <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
       integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
       crossorigin=""></script>
     <script>
-    
-    var driverColors = ['red', 'orange', 'green', 'blue', 'indigo', 'violet'];
-    $(function(){
-    
-      const socket = io({
-          transports: ['websocket']
-      });
-      
-      var mymap = L.map('mapid').setView([47.610664, -122.338917
-                  ], 13);
+    var driverColors = ['red', 'green', 'blue', 'indigo', 'violet'];
+    // socket.io connection
+    const socket = io({
+        transports: ['websocket']
+    });
+
+    // on page loaded
+    document.addEventListener('DOMContentLoaded', (event) => {
+
+      // create a leaflet map object
+      var mymap = L.map('mapid').setView([47.610664, -122.338917], 14);
+      // save the markers representing the drivers
       var driverMarkers = {};
       
-      L.tileLayer('https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}{r}.{ext}', {
+      // configure with tile server
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
        ext: 'png',
        maxZoom: 18,
-       attribution: 'Wikimedia maps | Map data &copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap contributors</a>'
+       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       }).addTo(mymap);
 
+      // when you get a message from the node socket.io server
       socket.on('new message', (data) => {
         if (!(data.key in driverMarkers)) {
           var colorPos = Object.keys(driverMarkers).length % driverColors.length;
           var color = driverColors[colorPos];
           driverMarkers[data.key] = L.circleMarker([data.latitude, data.longitude], {radius: 5, color: color, drivertype: "live", title: data.key});
           driverMarkers[data.key].addTo(mymap);
-          $('#json').append($('<pre><code>x</code></pre>').attr('id', data.key));
+          //hljs.highlightBlock(newPre);
         }
         driverMarkers[data.key].setLatLng([data.latitude, data.longitude]);
-        $('#' + data.key).html(JSON.stringify(data, null, 2));
+
+        var newPre = document.createElement("pre");
+        newPre.setAttribute("id", data.key);
+        var newCode = document.createElement("code");
+        newCode.appendChild(document.createTextNode(JSON.stringify(data, null, 2)));
+        newPre.appendChild(newCode);
+        var jsonNode = document.getElementById('json');
+        if (document.getElementById(data.key)) {
+          jsonNode.replaceChild(newPre, document.getElementById(data.key));
+        } else {
+          jsonNode.append(newPre);
+        }
+        hljs.highlightBlock(newPre);
       });
-      
-      
-      $('#view').click(function(){
-        
+
+      document.getElementById("view").addEventListener("click", function(){
+        // cycle thru and remove all previous history markers 
         mymap.eachLayer(function(layer){
           if(layer instanceof L.CircleMarker) {
             if (layer.options.drivertype == 'history') {
@@ -108,19 +123,25 @@ driver-2,47.613462507553486,-122.33219574693297
             }
           }
         });
+        
+        // cycle thru all the lines in the textbox
         var lines = $('#manual').val().split('\n');
         var latlngs = [];
         for (i in lines) {
-          var driverId = lines[i].split(",")[0];
-          var latitude = parseFloat(lines[i].split(",")[1]);
-          var longitude = parseFloat(lines[i].split(",")[2]);
-          var color = (driverId in driverMarkers) ? driverMarkers[driverId].options.color : 'red';
-          L.circleMarker([latitude, longitude], {radius: 5, color: color, drivertype: "history"}).addTo(mymap);
+          // the lines should be in the format of driver-id,latitude,longitude
+          var arr = lines[i].split(",");
+          if (arr.length > 2) {
+            var driverId = arr[0];
+            var latitude = parseFloat(arr[1]);
+            var longitude = parseFloat(arr[2]);
+            if (!isNaN(latitude) && !isNaN(longitude)) {
+              var color = (driverId in driverMarkers) ? driverMarkers[driverId].options.color : 'red';
+              L.circleMarker([latitude, longitude], {radius: 5, color: color, drivertype: "history"}).addTo(mymap);
+            }
+          }
         }
       });
     });
-    
-
     </script>
   </body>
 </html>

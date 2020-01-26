@@ -13,9 +13,6 @@ experiment/
 node_modules/
 .DS_Store
 .idea/
-gradle/
-gradlew*
-offset_*
 
 
 # Logs

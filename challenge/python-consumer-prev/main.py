@@ -47,10 +47,9 @@ try:
             print("Consumer error: {}".format(msg.error()))
             continue
 
-        print("Key:{} Value:{} [partition {}]".format(
+        print("{},{}".format(
             msg.key().decode('utf-8'),
-            msg.value().decode('utf-8'),
-            msg.partition()
+            msg.value().decode('utf-8')
         ))
         record_count += 1
         # Exit processing after 100 records

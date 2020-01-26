@@ -39,8 +39,7 @@ public class StreamsApp {
     settings.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG,
         Serdes.String().getClass().getName());
     // Disabling caching ensures we get a complete "changelog" from the
-    // aggregate(...) step above (i.e.
-    // every input event will have a corresponding output event.
+    // aggregate(...) (i.e. every input event will have a corresponding output event.
     // see
     // https://kafka.apache.org/23/documentation/streams/developer-guide/memory-mgmt.html#record-caches-in-the-dsl
     settings.put(StreamsConfig.CACHE_MAX_BYTES_BUFFERING_CONFIG, "0");
@@ -79,16 +78,16 @@ public class StreamsApp {
 
     final StreamsBuilder builder = new StreamsBuilder();
 
-    // Aggregate ideas from
-    // https://github.com/cloudboxlabs/blog-code/blob/master/citibikekafkastreams/src/main/java/com/cloudboxlabs/TurnoverRatio.java#L82
-    // https://github.com/confluentinc/kafka-streams-examples/blob/5.3.1-post/src/main/java/io/confluent/examples/streams/interactivequeries/kafkamusic/KafkaMusicExample.java#L362
-
-    final KStream<String, PositionValue> testing = builder.stream(
+    // create a KStream from the driver-positions-avro topic
+    // configure a serdes that can read the string key, and avro value
+    final KStream<String, PositionValue> positions = builder.stream(
         "driver-positions-avro",
         Consumed.with(Serdes.String(),
         positionValueSerde));
 
-    final KTable<String, PositionDistance> reduced = testing.groupByKey().aggregate(
+    // Grouping the stream returns a KGroupedStream, after grouping
+    // we can now aggregate
+    final KTable<String, PositionDistance> reduced = positions.groupByKey().aggregate(
         () -> null,
         (aggKey, newValue, aggValue) -> {
           final Double newLatitude = newValue.getLatitude();
@@ -99,16 +98,19 @@ public class StreamsApp {
             return new PositionDistance(newLatitude, newLongitude, 0.0);
           }
 
+          // cacluate the distance between the new value and the aggregate value
           final Double aggLatitude = aggValue.getLatitude();
           final Double aggLongitude = aggValue.getLongitude();
           Double aggDistance = aggValue.getDistance();
           final Double distance = Geodesic.WGS84.Inverse(aggLatitude, aggLongitude,
               newLatitude, newLongitude).s12;
           aggDistance += distance;
+
+          // return the new value and distance as the new aggregate
           return new PositionDistance(newLatitude, newLongitude, aggDistance);
       }, Materialized.with(
           Serdes.String(),
-          positionDistanceSerde)); // , Materialized.as("queryable-store-name")
+          positionDistanceSerde));
 
     reduced.toStream().to(
         "driver-distance-avro",

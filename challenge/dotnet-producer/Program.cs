@@ -61,7 +61,8 @@
                         // TODO: populate the message object
                         var message = new Message<string, string> { Key = ???, Value = ??? };
                         // TODO: write the lat/long position to a Kafka topic
-                        producer.Produce(???
+                        // TODO: configure handler as a callback to print the key and value
+                        producer.Produce(???, ???, ???);
                     }
                     catch (ProduceException<string, string> e)
                     {

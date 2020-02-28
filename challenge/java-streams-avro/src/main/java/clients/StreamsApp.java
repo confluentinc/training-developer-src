@@ -85,8 +85,9 @@ public class StreamsApp {
         Consumed.with(Serdes.String(),
         positionValueSerde));
 
-    // Grouping the stream returns a KGroupedStream, after grouping
-    // we can now aggregate
+
+    // We do a groupByKey on the ‘positions’ stream which returns an 
+    // intermediate KGroupedStream, we then aggregate to return a KTable.
     final KTable<String, PositionDistance> reduced = positions.groupByKey().aggregate(
         () -> null,
         (aggKey, newValue, aggValue) -> {

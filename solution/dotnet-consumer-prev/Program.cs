@@ -70,7 +70,7 @@ namespace DotnetConsumer
                         {
                             // Poll for available records
                             var cr = consumer.Consume(cts.Token);
-                            Console.WriteLine($"{cr.Key},{cr.Value}");
+                            Console.WriteLine($"{cr.Message.Key},{cr.Message.Value}");
                             recordCount++;
                             // Exit processing after 100 records
                             if (recordCount >= 100)

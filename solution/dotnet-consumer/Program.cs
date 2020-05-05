@@ -50,7 +50,7 @@
                             // TODO: Consume available records
                             var cr = consumer.Consume(cts.Token);
                             // TODO: print the contents of the record
-                            Console.WriteLine($"Key:{cr.Key} Value:{cr.Value} [partition {cr.Partition.Value}]");
+                            Console.WriteLine($"Key:{cr.Message.Key} Value:{cr.Message.Value} [partition {cr.Partition.Value}]");
                         }
                         catch (ConsumeException e)
                         {

@@ -4,14 +4,14 @@ if [ "$HOSTNAME" = tools ]; then
   exit 1
 fi
 
-if grep "DEV 5.4.0-v1.0.0 host entries" /etc/hosts >/dev/null; then
+if grep "DEV host entries" /etc/hosts >/dev/null; then
   echo "Already done!"
   exit 0
 fi
 
 cat << EOF | sudo tee -a /etc/hosts >/dev/null
 
-# DEV 5.4.0-v1.0.0 host entries
+# DEV host entries
 127.0.0.1 kafka
 127.0.0.1 zookeeper
 127.0.0.1 schema-registry

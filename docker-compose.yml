@@ -2,7 +2,7 @@
 version: '2'
 services:
   zookeeper:
-    image: confluentinc/cp-zookeeper:5.4.0
+    image: confluentinc/cp-zookeeper:5.5.0-1-ubi8
     container_name: zookeeper
     ports:
       - 2181:2181
@@ -11,7 +11,7 @@ services:
       ZOOKEEPER_TICK_TIME: 2000
 
   kafka:
-    image: confluentinc/cp-enterprise-kafka:5.4.0
+    image: confluentinc/cp-enterprise-kafka:5.5.0-1-ubi8
     container_name: kafka
     ports:
       - 9092:9092
@@ -22,6 +22,8 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_METRIC_REPORTERS: "io.confluent.metrics.reporter.ConfluentMetricsReporter"
       KAFKA_AUTO_CREATE_TOPICS_ENABLE: "false"
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       CONFLUENT_METRICS_REPORTER_BOOTSTRAP_SERVERS: "kafka:9092"
       CONFLUENT_METRICS_REPORTER_TOPIC_REPLICAS: 1
 
@@ -149,7 +151,7 @@ services:
                       npm run start'"
 
   schema-registry:
-    image: confluentinc/cp-schema-registry:5.4.0
+    image: confluentinc/cp-schema-registry:5.5.0-1-ubi8
     container_name: schema-registry
     ports:
       - "8081:8081"
@@ -159,7 +161,7 @@ services:
       KAFKA_REST_CUB_KAFKA_TIMEOUT: 180 # https://github.com/confluentinc/cp-docker-images/issues/807
 
   ksqldb-server:
-    image: confluentinc/cp-ksql-server:5.4.0
+    image: confluentinc/cp-ksqldb-server:5.5.0-1-ubi8
     container_name: ksqldb-server
     ports:
       - "8088:8088"
@@ -185,9 +187,8 @@ services:
       - 5432:5432
 
   connect:
-    image: confluentinc/cp-kafka-connect:5.4.0
+    image: confluentinc/cp-kafka-connect:5.5.0-1-ubi8
     container_name: connect
-    restart: always
     ports:
       - "8083:8083"
     environment:
@@ -212,7 +213,7 @@ services:
       CONNECT_CONSUMER_INTERCEPTOR_CLASSES: io.confluent.monitoring.clients.interceptor.MonitoringConsumerInterceptor
 
   control-center:
-    image: confluentinc/cp-enterprise-control-center:5.4.0
+    image: confluentinc/cp-enterprise-control-center:5.5.0-1-ubi8
     container_name: control-center
     ports:
       - "9021:9021"
@@ -231,23 +232,24 @@ services:
       CONTROL_CENTER_KSQL_URL: "http://ksqldb-server:8088"
       
   create-topics:
-    image: confluentinc/cp-enterprise-kafka:5.4.0
+    image: confluentinc/cp-enterprise-kafka:5.5.0-1-ubi8
     container_name: create-topics
-    command: "bash -c 'echo Waiting for Kafka to be ready... && \
-                       cub kafka-ready -b kafka:9092 1 300 && \
-                       echo Creating topics... && \
-                       kafka-topics --bootstrap-server kafka:9092 --create --topic driver-positions --partitions 3 --replication-factor 1 && \
-                       kafka-topics --bootstrap-server kafka:9092 --create --topic driver-positions-pyavro --partitions 3 --replication-factor 1 && \
-                       kafka-topics --bootstrap-server kafka:9092 --create --topic driver-profiles-avro --partitions 3 --replication-factor 1 --config cleanup.policy=compact && \
-                       kafka-topics --bootstrap-server kafka:9092 --create --topic driver-profiles-ksqlavro --partitions 3 --replication-factor 1 --config cleanup.policy=compact && \
-                       kafka-topics --bootstrap-server kafka:9092 --create --topic driver-positions-avro --partitions 3 --replication-factor 1 && \
-                       kafka-topics --bootstrap-server kafka:9092 --create --topic driver-distance-avro --partitions 3 --replication-factor 1 && \
-                       kafka-topics --bootstrap-server kafka:9092 --create --topic driver-augmented-avro --partitions 3 --replication-factor 1 && \
-                       kafka-topics --bootstrap-server kafka:9092 --create --topic _confluent-monitoring --partitions 12 --replication-factor 1 --config retention.ms=259200000 --config message.timestamp.type=LogAppendTime'"
+    command: >
+      bash -c 'echo Waiting for Kafka to be ready... ;
+      cub kafka-ready -b kafka:9092 1 300 ;
+      echo Creating topics... ;
+      kafka-topics --bootstrap-server kafka:9092 --create --topic driver-positions --partitions 3 --replication-factor 1 &&
+      kafka-topics --bootstrap-server kafka:9092 --create --topic driver-positions-pyavro --partitions 3 --replication-factor 1 &&
+      kafka-topics --bootstrap-server kafka:9092 --create --topic driver-profiles-avro --partitions 3 --replication-factor 1 --config cleanup.policy=compact &&
+      kafka-topics --bootstrap-server kafka:9092 --create --topic driver-profiles-ksqlavro --partitions 3 --replication-factor 1 --config cleanup.policy=compact &&
+      kafka-topics --bootstrap-server kafka:9092 --create --topic driver-positions-avro --partitions 3 --replication-factor 1 &&
+      kafka-topics --bootstrap-server kafka:9092 --create --topic driver-distance-avro --partitions 3 --replication-factor 1 &&
+      kafka-topics --bootstrap-server kafka:9092 --create --topic driver-augmented-avro --partitions 3 --replication-factor 1 &&
+      kafka-topics --bootstrap-server kafka:9092 --create --topic _confluent-monitoring --partitions 12 --replication-factor 1 --config retention.ms=259200000 --config message.timestamp.type=LogAppendTime || true'
 
 
   tools:
-    image: cnfltraining/training-tools:5.4
+    image: cnfltraining/training-tools:5.5
     container_name: tools
     hostname: tools
     volumes:

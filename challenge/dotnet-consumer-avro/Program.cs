@@ -56,7 +56,7 @@
                         {
                             // Poll for available records
                             var cr = consumer.Consume(cts.Token);
-                            Console.WriteLine($"Key:{cr.Key} Latitude:{cr.Value.latitude} Longitude:{cr.Value.longitude} [partition {cr.Partition.Value}]");
+                            Console.WriteLine($"Key:{cr.Message.Key} Latitude:{cr.Message.Value.latitude} Longitude:{cr.Message.Value.longitude} [partition {cr.Partition.Value}]");
                         }
                         catch (ConsumeException e)
                         {

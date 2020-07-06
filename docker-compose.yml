@@ -3,6 +3,7 @@ version: '2'
 services:
   zookeeper:
     image: confluentinc/cp-zookeeper:5.5.0-1-ubi8
+    restart: always
     container_name: zookeeper
     ports:
       - 2181:2181
@@ -12,6 +13,7 @@ services:
 
   kafka:
     image: confluentinc/cp-enterprise-kafka:5.5.0-1-ubi8
+    restart: always
     container_name: kafka
     ports:
       - 9092:9092
@@ -29,6 +31,7 @@ services:
 
   producer1:
     image: cnfltraining/java-producer-avro:1.0
+    restart: always
     container_name: producer1
     environment:
       DRIVER_ID: driver-1
@@ -40,6 +43,7 @@ services:
 
   producer2:
     image: cnfltraining/java-producer-avro:1.0
+    restart: always
     container_name: producer2
     environment:
       DRIVER_ID: driver-2
@@ -51,6 +55,7 @@ services:
 
   producer3:
     image: cnfltraining/java-producer-avro:1.0
+    restart: always
     container_name: producer3
     environment:
       DRIVER_ID: driver-3
@@ -62,6 +67,7 @@ services:
                         
   producer4:
     image: cnfltraining/java-producer-avro:1.0
+    restart: always
     container_name: producer4
     environment:
       DRIVER_ID: driver-4
@@ -73,6 +79,7 @@ services:
 
   producer5:
     image: cnfltraining/java-producer-avro:1.0
+    restart: always
     container_name: producer5
     environment:
       DRIVER_ID: driver-5
@@ -84,6 +91,7 @@ services:
 
   webserver:
     image: cnfltraining/node-webserver:1.0
+    restart: always
     container_name: webserver
     hostname: webserver
     ports:
@@ -96,6 +104,7 @@ services:
 
   webserver-avro:
     image: cnfltraining/node-webserver-avro:1.0
+    restart: always
     container_name: webserver-avro
     hostname: webserver-avro
     ports:
@@ -110,6 +119,7 @@ services:
 
   webserver-pyavro:
     image: cnfltraining/node-webserver-avro:1.0
+    restart: always
     container_name: webserver-pyavro
     hostname: webserver-pyavro
     ports:
@@ -124,6 +134,7 @@ services:
 
   webserver-streams:
     image: cnfltraining/node-webserver-avro:1.0
+    restart: always
     container_name: webserver-streams
     hostname: webserver-streams
     ports:
@@ -138,6 +149,7 @@ services:
 
   webserver-ksql:
     image: cnfltraining/node-webserver-avro:1.0
+    restart: always
     container_name: webserver-ksql
     hostname: webserver-ksql
     ports:
@@ -152,6 +164,7 @@ services:
 
   schema-registry:
     image: confluentinc/cp-schema-registry:5.5.0-1-ubi8
+    restart: always
     container_name: schema-registry
     ports:
       - "8081:8081"
@@ -162,6 +175,7 @@ services:
 
   ksqldb-server:
     image: confluentinc/cp-ksqldb-server:5.5.0-1-ubi8
+    restart: always
     container_name: ksqldb-server
     ports:
       - "8088:8088"
@@ -180,6 +194,7 @@ services:
 
   postgres:
     image: postgres:11.2-alpine
+    restart: always
     container_name: postgres
     volumes:
       - ./postgres/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
@@ -188,6 +203,7 @@ services:
 
   connect:
     image: confluentinc/cp-kafka-connect:5.5.0-1-ubi8
+    restart: always
     container_name: connect
     ports:
       - "8083:8083"
@@ -214,6 +230,7 @@ services:
 
   control-center:
     image: confluentinc/cp-enterprise-control-center:5.5.0-1-ubi8
+    restart: always
     container_name: control-center
     ports:
       - "9021:9021"

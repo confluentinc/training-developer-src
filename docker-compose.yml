@@ -2,7 +2,7 @@
 version: '2'
 services:
   zookeeper:
-    image: confluentinc/cp-zookeeper:5.5.0-1-ubi8
+    image: confluentinc/cp-zookeeper:6.0.0-1-ubi8
     restart: always
     container_name: zookeeper
     ports:
@@ -12,7 +12,7 @@ services:
       ZOOKEEPER_TICK_TIME: 2000
 
   kafka:
-    image: confluentinc/cp-enterprise-kafka:5.5.0-1-ubi8
+    image: confluentinc/cp-enterprise-kafka:6.0.0-1-ubi8
     restart: always
     container_name: kafka
     ports:
@@ -26,6 +26,9 @@ services:
       KAFKA_AUTO_CREATE_TOPICS_ENABLE: "false"
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_LOG_RETENTION_HOURS: 1
+      KAFKA_LOG_SEGMENT_BYTES: 536870912
+      KAFKA_LOG_RETENTION_BYTES: 536870912
       CONFLUENT_METRICS_REPORTER_BOOTSTRAP_SERVERS: "kafka:9092"
       CONFLUENT_METRICS_REPORTER_TOPIC_REPLICAS: 1
 
@@ -163,7 +166,7 @@ services:
                       npm run start'"
 
   schema-registry:
-    image: confluentinc/cp-schema-registry:5.5.0-1-ubi8
+    image: confluentinc/cp-schema-registry:6.0.0-1-ubi8
     restart: always
     container_name: schema-registry
     ports:
@@ -174,7 +177,7 @@ services:
       KAFKA_REST_CUB_KAFKA_TIMEOUT: 180 # https://github.com/confluentinc/cp-docker-images/issues/807
 
   ksqldb-server:
-    image: confluentinc/cp-ksqldb-server:5.5.0-1-ubi8
+    image: confluentinc/cp-ksqldb-server:6.0.0-1-ubi8
     restart: always
     container_name: ksqldb-server
     ports:
@@ -202,7 +205,7 @@ services:
       - 5432:5432
 
   connect:
-    image: confluentinc/cp-kafka-connect:5.5.0-1-ubi8
+    image: confluentinc/cp-kafka-connect:6.0.0-1-ubi8
     restart: always
     container_name: connect
     ports:
@@ -229,7 +232,7 @@ services:
       CONNECT_CONSUMER_INTERCEPTOR_CLASSES: io.confluent.monitoring.clients.interceptor.MonitoringConsumerInterceptor
 
   control-center:
-    image: confluentinc/cp-enterprise-control-center:5.5.0-1-ubi8
+    image: confluentinc/cp-enterprise-control-center:6.0.0-1-ubi8
     restart: always
     container_name: control-center
     ports:
@@ -247,9 +250,10 @@ services:
       CONTROL_CENTER_SCHEMA_REGISTRY_URL: "http://schema-registry:8081"
       CONTROL_CENTER_CONNECT_CLUSTER: "connect:8083"
       CONTROL_CENTER_KSQL_URL: "http://ksqldb-server:8088"
+      CONTROL_CENTER_UI_AUTOUPDATE_ENABLE: "false"
       
   create-topics:
-    image: confluentinc/cp-enterprise-kafka:5.5.0-1-ubi8
+    image: confluentinc/cp-enterprise-kafka:6.0.0-1-ubi8
     container_name: create-topics
     command: >
       bash -c 'echo Waiting for Kafka to be ready... ;
@@ -268,7 +272,7 @@ services:
 
 
   tools:
-    image: cnfltraining/training-tools:5.5
+    image: cnfltraining/training-tools:6.0
     container_name: tools
     hostname: tools
     volumes:

@@ -1,18 +1,8 @@
-buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath "com.commercehub.gradle.plugin:gradle-avro-plugin:0.16.0"
-    }
-}
-
 plugins {
+  id 'com.github.davidmc24.gradle.plugin.avro' version '1.2.0'
   id 'java'
   id 'application'
 }
-
-apply plugin: "com.commercehub.gradle.plugin.avro"
 
 mainClassName = 'clients.Consumer'
 

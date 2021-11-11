@@ -11,6 +11,20 @@ public class VehiclePositionProducer {
     public static void main(String[] args) throws MqttException {
         System.out.println("*** Starting VP Producer ***");
 
-        // TODO: Add code here
+        Properties settings = new Properties();
+        settings.put(ProducerConfig.CLIENT_ID_CONFIG, "vp-producer");
+        settings.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "kafka:9092");
+        settings.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+        settings.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+
+        final KafkaProducer<String, String> producer = new KafkaProducer<String, String>(settings);
+
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            System.out.println("### Stopping VP Producer ###");
+            producer.close();
+        }));
+
+        Subscriber subscriber = new Subscriber(producer);
+        subscriber.start();
     }
 }

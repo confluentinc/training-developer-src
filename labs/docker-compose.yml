@@ -3,6 +3,7 @@ services:
   zookeeper:
     image: confluentinc/cp-zookeeper:5.3.0
     hostname: zookeeper
+    container_name: dev_zookeeper
     networks:
       - confluent
     environment:
@@ -12,6 +13,7 @@ services:
   kafka:
     image: "confluentinc/cp-enterprise-kafka:5.3.0"
     hostname: kafka
+    container_name: dev_kafka
     networks:
       - confluent
     ports:
@@ -20,7 +22,7 @@ services:
       KAFKA_BROKER_ID: 101
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
-      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "false"
+      #KAFKA_AUTO_CREATE_TOPICS_ENABLE: "false"
       KAFKA_DELETE_TOPIC_ENABLE: "true"
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_METRIC_REPORTERS: "io.confluent.metrics.reporter.ConfluentMetricsReporter"
@@ -29,6 +31,7 @@ services:
   schema-registry:
     image: "confluentinc/cp-schema-registry:5.3.0"
     hostname: schema-registry
+    container_name: dev_schema_registry
     networks:
       - confluent
     ports:
@@ -41,6 +44,7 @@ services:
   connect:
     image: confluentinc/cp-kafka-connect:5.3.0
     hostname: connect
+    container_name: dev_connect
     restart: always
     ports:
       - "8083:8083"
@@ -73,6 +77,7 @@ services:
   control-center:
     image: confluentinc/cp-enterprise-control-center:5.3.0
     hostname: control-center
+    container_name: dev_control_center
     networks:
       - confluent
     ports:
@@ -93,6 +98,7 @@ services:
   ksql-server:
     image: "confluentinc/cp-ksql-server:5.3.0"
     hostname: ksql-server
+    container_name: dev_ksql_server
     ports:
       - "8088:8088"
     networks:
@@ -111,11 +117,12 @@ services:
 
   tools:
     image: cnfltraining/training-tools:19.06
+    container_name: dev_tootls
     hostname: tools
     networks:
       - confluent
     volumes:
-      - .:/root/confluent-dev/labs/
+      - .:/rootvis/confluent-dev/labs/
     command: /bin/sh
     tty: true
 

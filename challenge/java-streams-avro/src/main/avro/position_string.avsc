@@ -1,9 +1,9 @@
 {"namespace": "clients.avro",
     "type": "record",
-    "name": "PositionDistance",
+    "name": "PositionString",
     "fields": [
         {"name": "latitude", "type": "double"},
         {"name": "longitude", "type": "double"},
-        {"name": "distance", "type": "double"}
+        {"name": "positionString", "type": "string"}
     ]
 }

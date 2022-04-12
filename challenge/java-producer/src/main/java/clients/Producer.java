@@ -61,7 +61,7 @@ public class Producer {
       // TODO: write the lat/long position to a Kafka topic
       // TODO: print the key and value in the callback lambda
       producer.send(???, (md, e) -> {
-        System.out.println(???
+        System.out.printf(???
       });
       Thread.sleep(1000);
       pos = (pos + 1) % rows.length;

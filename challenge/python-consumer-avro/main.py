@@ -1,20 +1,31 @@
 "Python Avro Consumer"
-from confluent_kafka.avro import AvroConsumer
+from confluent_kafka import DeserializingConsumer
+from confluent_kafka.schema_registry import SchemaRegistryClient
+from confluent_kafka.schema_registry.avro import AvroDeserializer
+from confluent_kafka.serialization import StringDeserializer
 from confluent_kafka.avro.serializer import SerializerError
 
-KAFKA_TOPIC = "driver-positions-pyavro"
+KAFKA_TOPIC = "driver-positions-avro"
 
 print("Starting Python Avro Consumer.")
 
+with open("position_value.avsc","r") as avro_file:
+    value_schema = avro_file.read()
+
+schema_registry_client = SchemaRegistryClient({'url': 'http://schema-registry:8081'})
+
+avro_deserializer = AvroDeserializer(value_schema, schema_registry_client)
+
 # Configure the group id, location of the bootstrap server,
 # Confluent interceptors, and schema registry location
-consumer = AvroConsumer({
-    'bootstrap.servers': 'kafka:9092',
-    'plugin.library.paths': 'monitoring-interceptor',
-    'group.id': 'python-consumer-avro',
-    'auto.offset.reset': 'earliest',
-    'schema.registry.url': 'http://schema-registry:8081'
-})
+consumer_conf = {'bootstrap.servers': "kafka:9092",
+                 'key.deserializer': StringDeserializer('utf_8'),
+                 'value.deserializer': avro_deserializer,
+                 'group.id': 'python-consumer-avro',
+                 'plugin.library.paths': 'monitoring-interceptor',
+                 'auto.offset.reset': "earliest"}
+
+consumer = DeserializingConsumer(consumer_conf)
 
 # Subscribe to our topic
 consumer.subscribe([KAFKA_TOPIC])

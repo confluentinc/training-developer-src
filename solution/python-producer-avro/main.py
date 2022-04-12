@@ -1,33 +1,47 @@
-"Python Producer"
+"Python Avro Producer"
+
 from time import sleep
 import os
 import atexit
 
-from confluent_kafka import avro
-from confluent_kafka.avro import AvroProducer
+from confluent_kafka import SerializingProducer
+from confluent_kafka.serialization import StringSerializer
+from confluent_kafka.schema_registry import SchemaRegistryClient
+from confluent_kafka.schema_registry.avro import AvroSerializer
 
 DRIVER_FILE_PREFIX = "./drivers/"
-KAFKA_TOPIC = "driver-positions-pyavro"
+KAFKA_TOPIC = "driver-positions-avro"
 # Load a driver id from an environment variable
 # if it isn't present use "driver-3"
 DRIVER_ID = os.getenv("DRIVER_ID", "driver-3")
 
 print("Starting Python Avro producer.")
 
-value_schema = avro.load("position_value.avsc")
-key_schema = avro.load("position_key.avsc")
+with open("position_value.avsc","r") as avro_file:
+    value_schema = avro_file.read()
 
 # Configure the location of the bootstrap server, Confluent interceptors
 # and a partitioner compatible with Java, and key/value schemas
 # see https://github.com/edenhill/librdkafka/blob/master/CONFIGURATION.md
-producer = AvroProducer({
-    'bootstrap.servers': 'kafka:9092',
-    'plugin.library.paths': 'monitoring-interceptor',
-    'partitioner': 'murmur2_random',
-    'schema.registry.url': 'http://schema-registry:8081'
-}
-                        , default_key_schema=key_schema
-                        , default_value_schema=value_schema)
+schema_registry_client = SchemaRegistryClient({'url': 'http://schema-registry:8081'})
+
+avro_serializer = AvroSerializer(value_schema, schema_registry_client)
+
+producer_conf = {'bootstrap.servers': 'kafka:9092',
+                 'key.serializer': StringSerializer('utf_8'),
+                 'value.serializer': avro_serializer,
+                 'plugin.library.paths': 'monitoring-interceptor',
+                 'partitioner': 'murmur2_random'}
+
+producer = SerializingProducer(producer_conf)
+
+
+def delivery_report(err, msg):
+    if err is not None:
+        print("Delivery failed {}: {}".format(msg.key(), err))
+        return
+    print("Sent Key:{} Value:{}".format(key, value))
+
 
 def exit_handler():
     """Run this on exit"""
@@ -47,7 +61,7 @@ while True:
     line = lines[pos]
     # Trigger any available delivery report callbacks from previous produce() calls
     producer.poll(0)
-    key = {"key" : DRIVER_ID}
+    key = DRIVER_ID
     latitude = line.split(",")[0].strip()
     longitude = line.split(",")[1].strip()
     value = {"latitude" : float(latitude), "longitude" : float(longitude)}
@@ -56,8 +70,7 @@ while True:
         topic=KAFKA_TOPIC,
         value=value,
         key=key,
-        callback=lambda err, msg:
-        print("Sent Key:{} Value:{}".format(key, value) if err is None else err)
+        on_delivery=delivery_report
         )
     sleep(1)
     pos = (pos + 1) % len(lines)

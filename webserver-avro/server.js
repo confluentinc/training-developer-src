@@ -36,6 +36,14 @@ const schemas = {
       {'name': 'MODEL', 'type': ['null', 'string'], 'default': null},
     ],
   },
+  'driver-positions-string-avro': {
+    type: 'record',
+    fields: [
+      {'name': 'latitude', 'type': 'double'},
+      {'name': 'longitude', 'type': 'double'},
+      {'name': 'positionString', 'type': 'string'},
+    ],
+  },
 };
 
 // only the python topic has an avro key
@@ -72,6 +80,7 @@ stream.on('data', function(avroData) {
   if (data.LATITUDE) message['latitude'] = data.LATITUDE;
   if (data.LONGITUDE) message['longitude'] = data.LONGITUDE;
   if (data.distance) message['distance'] = Math.round(data.distance);
+  if (data.positionString) message['position-string'] = data.positionString;
 
   // different format for ksql avro stream
   if (avroData.topic == 'driver-augmented-avro') {

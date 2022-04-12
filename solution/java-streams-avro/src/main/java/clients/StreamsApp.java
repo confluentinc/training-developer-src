@@ -1,6 +1,6 @@
 package clients;
 
-import clients.avro.PositionDistance;
+import clients.avro.PositionString;
 import clients.avro.PositionValue;
 
 import io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde;
@@ -10,8 +10,6 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.CountDownLatch;
 
-import net.sf.geographiclib.Geodesic;
-
 import org.apache.kafka.common.serialization.Serde;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.KafkaStreams;
@@ -20,8 +18,6 @@ import org.apache.kafka.streams.StreamsConfig;
 import org.apache.kafka.streams.Topology;
 import org.apache.kafka.streams.kstream.Consumed;
 import org.apache.kafka.streams.kstream.KStream;
-import org.apache.kafka.streams.kstream.KTable;
-import org.apache.kafka.streams.kstream.Materialized;
 import org.apache.kafka.streams.kstream.Produced;
 
 public class StreamsApp {
@@ -37,7 +33,7 @@ public class StreamsApp {
     settings.put(StreamsConfig.APPLICATION_ID_CONFIG, "streams-app-1");
     settings.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "kafka:9092");
     settings.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG,
-        Serdes.String().getClass().getName());
+            Serdes.String().getClass().getName());
     // Disabling caching ensures we get a complete "changelog" from the
     // aggregate(...) (i.e. every input event will have a corresponding output event.
     // see
@@ -68,54 +64,52 @@ public class StreamsApp {
   }
 
   private static Topology getTopology() {
+
     // When you want to override serdes explicitly/selectively
     final Map<String, String> serdeConfig = Collections.singletonMap("schema.registry.url",
-                                                                    "http://schema-registry:8081");
+            "http://schema-registry:8081");
     final Serde<PositionValue> positionValueSerde = new SpecificAvroSerde<>();
-    positionValueSerde.configure(serdeConfig, false); 
-    final Serde<PositionDistance> positionDistanceSerde = new SpecificAvroSerde<>();
-    positionDistanceSerde.configure(serdeConfig, false); 
+    positionValueSerde.configure(serdeConfig, false);
+    final Serde<PositionString> positionStringSerde = new SpecificAvroSerde<>();
+    positionStringSerde.configure(serdeConfig, false);
 
+    // Create the StreamsBuilder object to create our Topology
     final StreamsBuilder builder = new StreamsBuilder();
 
-    // create a KStream from the driver-positions-avro topic
+    // Create a KStream from the `driver-positions-avro` topic
     // configure a serdes that can read the string key, and avro value
     final KStream<String, PositionValue> positions = builder.stream(
-        "driver-positions-avro",
-        Consumed.with(Serdes.String(),
-        positionValueSerde));
+            "driver-positions-avro",
+            Consumed.with(Serdes.String(),
+                    positionValueSerde));
 
+    // TO-DO: Use filter() method to filter out the events from `driver-2`.
+    //        Define the predicate in the lambda expression of the filter().
+    final KStream<String, PositionValue> positionsFiltered = positions.filter(
+            (key,value) -> !key.equals("driver-2"));
 
-    // We do a groupByKey on the ‘positions’ stream which returns an 
-    // intermediate KGroupedStream, we then aggregate to return a KTable.
-    final KTable<String, PositionDistance> reduced = positions.groupByKey().aggregate(
-        () -> null,
-        (aggKey, newValue, aggValue) -> {
-          final Double newLatitude = newValue.getLatitude();
-          final Double newLongitude = newValue.getLongitude();
+    // TO-DO: Use mapValues() method to change the value of each
+    //        event from PositionValue to PositionString class.
+    //        You can check the two schemas under src/main/avro/.
+    //        Notice that position_string.avsc contains a new field
+    //        `positionString` as String type.
+    final KStream<String, PositionString> positionsString = positionsFiltered.mapValues(
+            value -> {
+              final Double latitude = value.getLatitude();
+              final Double longitude = value.getLongitude();
+              final String positionString = "Latitude: " + String.valueOf(latitude) +
+                      ", Longitude: " + String.valueOf(longitude);
+              return new PositionString(latitude, longitude, positionString);
+            }
+    );
 
-          // initial record - no distance to calculate
-          if (aggValue == null) {
-            return new PositionDistance(newLatitude, newLongitude, 0.0);
-          }
+    // Write the results to topic `driver-positions-string-avro`
+    // configure a serdes that can write the string key, and new avro value
+    positionsString.to(
+            "driver-positions-string-avro",
+            Produced.with(Serdes.String(), positionStringSerde));
 
-          // cacluate the distance between the new value and the aggregate value
-          final Double aggLatitude = aggValue.getLatitude();
-          final Double aggLongitude = aggValue.getLongitude();
-          Double aggDistance = aggValue.getDistance();
-          final Double distance = Geodesic.WGS84.Inverse(aggLatitude, aggLongitude,
-              newLatitude, newLongitude).s12;
-          aggDistance += distance;
-
-          // return the new value and distance as the new aggregate
-          return new PositionDistance(newLatitude, newLongitude, aggDistance);
-      }, Materialized.with(
-          Serdes.String(),
-          positionDistanceSerde));
-
-    reduced.toStream().to(
-        "driver-distance-avro",
-        Produced.with(Serdes.String(), positionDistanceSerde));
+    // Build the Topology
     final Topology topology = builder.build();
     return topology;
   }

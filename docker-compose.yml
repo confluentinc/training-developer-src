@@ -247,4 +247,19 @@ services:
       kafka-topics --bootstrap-server kafka:9092 --create --topic _confluent-monitoring --partitions 12 --replication-factor 1 --config retention.ms=259200000 --config message.timestamp.type=LogAppendTime ;
       kafka-topics --bootstrap-server kafka:9092 --create --topic driver-positions-string-avro --partitions 3 --replication-factor 1 ;
       true'
+      
+  tools:
+    image: cnfltraining/training-tools:6.0
+    restart: always
+    hostname: tools
+    container_name: tools
+    volumes:
+      - ${PWD}:/apps
+    environment:
+      CLASSPATH: "/usr/share/java/monitoring-interceptors/monitoring-interceptors-6.0.0.jar"
+    working_dir: /apps
+    networks:
+      - confluent
+    command: /bin/bash
+    tty: true
 

@@ -10,7 +10,7 @@
   "author": "Confluent Training",
   "license": "ISC",
   "dependencies": {
-    "avsc": "^5.7.8",
+    "avsc": "^5.7.9",
     "express": "^4.17.1",
     "node-rdkafka": "^2.7.4",
     "socket.io": "^2.3.0"

@@ -201,19 +201,19 @@ services:
                       java -classpath \"lib/*\" clients.Producer'"
 
   webserver:
-    image: cnfltraining/node-webserver:1.0
+    image: cnfltraining/node-webserver:3.0
     container_name: webserver
     hostname: webserver
     ports:
       - 3001:3000
-    command: "bash -c 'until kafkacat -b kafka:9092 -L | grep driver-positions; \
+    command: "bash -c 'until kcat -b kafka:29092 -L | grep driver-positions; \
                       do sleep 1; \
                       echo waiting for topic; \
                       done; \
                       npm run start'"
 
   webserver-avro:
-    image: cnfltraining/node-webserver-avro:1.0
+    image: cnfltraining/node-webserver-avro:3.0
     container_name: webserver-avro
     hostname: webserver-avro
     ports:

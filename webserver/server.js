@@ -5,7 +5,7 @@ const topics = [
 ];
 const stream = Kafka.createReadStream({
   'group.id': `${os.hostname()}`,
-  'metadata.broker.list': 'kafka:9092',
+  'metadata.broker.list': 'kafka:29092',
   'client.id': 'webserver-consumer',
 }, {'auto.offset.reset': 'earliest'}, {
   topics: topics,

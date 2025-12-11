@@ -5,11 +5,9 @@ import clients.avro.PositionValue;
 import io.confluent.kafka.serializers.KafkaAvroDeserializer;
 import io.confluent.kafka.serializers.KafkaAvroDeserializerConfig;
 import io.confluent.kafka.serializers.KafkaAvroSerializerConfig;
-import io.confluent.monitoring.clients.interceptor.MonitoringConsumerInterceptor;
 
 import java.time.Duration;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Properties;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -27,8 +25,9 @@ public class Consumer {
     System.out.println("Starting Java Avro Consumer.");
 
     // Configure the group id, location of the bootstrap server, default deserializers,
-    // Confluent interceptors, Schema Registry location
+    // Schema Registry location
     final Properties settings = new Properties();
+    settings.put(ConsumerConfig.CLIENT_ID_CONFIG, "java-consumer-avro-client");
     settings.put(ConsumerConfig.GROUP_ID_CONFIG, "java-consumer-avro");
     settings.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "kafka:9092");
     settings.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
@@ -36,8 +35,6 @@ public class Consumer {
     settings.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, KafkaAvroDeserializer.class);
     settings.put(KafkaAvroDeserializerConfig.SPECIFIC_AVRO_READER_CONFIG, "true");
     settings.put(KafkaAvroSerializerConfig.SCHEMA_REGISTRY_URL_CONFIG, "http://schema-registry:8081");
-    settings.put(ConsumerConfig.INTERCEPTOR_CLASSES_CONFIG,
-        List.of(MonitoringConsumerInterceptor.class));
 
     final KafkaConsumer<String, PositionValue> consumer = new KafkaConsumer<>(settings);
 

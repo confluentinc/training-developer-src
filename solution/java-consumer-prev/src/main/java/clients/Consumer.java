@@ -1,12 +1,10 @@
 package clients;
 
-import io.confluent.monitoring.clients.interceptor.MonitoringConsumerInterceptor;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
@@ -27,16 +25,14 @@ public class Consumer {
   public static void main(String[] args) {
     System.out.println("Starting Java Consumer.");
 
-    // Configure the group id, location of the bootstrap server, default deserializers,
-    // Confluent interceptors
+    // Configure the group id, location of the bootstrap server, default deserializers
     final Properties settings = new Properties();
+    settings.put(ConsumerConfig.CLIENT_ID_CONFIG, "java-consumer-prev-client");
     settings.put(ConsumerConfig.GROUP_ID_CONFIG, "java-consumer-prev");
     settings.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "kafka:9092");
     settings.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
     settings.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
     settings.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-    settings.put(ConsumerConfig.INTERCEPTOR_CLASSES_CONFIG,
-        List.of(MonitoringConsumerInterceptor.class));
 
     final KafkaConsumer<String, String> consumer = new KafkaConsumer<>(settings);
     

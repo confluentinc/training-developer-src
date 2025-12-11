@@ -24,12 +24,12 @@ namespace DotnetProducerAvro
         public static void Main(string[] args)
         {
             Console.WriteLine("Starting .net Avro producer.");
-            // Configure the location of the bootstrap server, and Confluent interceptors
+            // Configure the location of the bootstrap server
             // and a partitioner compatible with Java - see https://github.com/edenhill/librdkafka/blob/master/CONFIGURATION.md
             var producerConfig = new ProducerConfig
             {
               BootstrapServers = "kafka:9092",
-              PluginLibraryPaths = "monitoring-interceptor",
+              ClientId = "dotnet-producer-avro",
               Partitioner = Partitioner.Murmur2Random,
             };
             // Configure schema registry location

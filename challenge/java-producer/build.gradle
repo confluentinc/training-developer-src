@@ -18,7 +18,6 @@ java {
 }
 
 dependencies {
-    implementation group: 'org.apache.kafka', name: 'kafka-clients', version: '3.9.0'
-    implementation group: 'io.confluent', name: 'monitoring-interceptors', version: '8.1.1'
+    implementation group: 'org.apache.kafka', name: 'kafka-clients', version: '4.1.1'
     implementation group: 'org.slf4j', name: 'slf4j-reload4j', version: '2.0.16'
 }

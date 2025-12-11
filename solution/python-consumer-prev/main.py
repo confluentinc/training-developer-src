@@ -10,7 +10,7 @@ print("Starting Python Consumer.")
 # Confluent interceptors
 consumer = Consumer({
     'bootstrap.servers': 'kafka:9092',
-    'plugin.library.paths': 'monitoring-interceptor',
+    'client.id': 'python-consumer-prev-client',
     'group.id': 'python-consumer-prev',
     'auto.offset.reset': 'earliest'
 })

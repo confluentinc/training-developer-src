@@ -1,16 +1,16 @@
 services:
 
-  broker:
+  kafka:
     image: confluentinc/cp-server:8.1.1
-    hostname: broker
-    container_name: broker
+    hostname: kafka
+    container_name: kafka
     ports:
       - "9092:9092"
       - "9101:9101"
     environment:
       KAFKA_NODE_ID: 1
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: 'CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT'
-      KAFKA_ADVERTISED_LISTENERS: 'PLAINTEXT://broker:29092,PLAINTEXT_HOST://localhost:9092'
+      KAFKA_ADVERTISED_LISTENERS: 'PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092'
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
       KAFKA_CONFLUENT_LICENSE_TOPIC_REPLICATION_FACTOR: 1
@@ -21,11 +21,11 @@ services:
       KAFKA_JMX_HOSTNAME: localhost
       KAFKA_CONFLUENT_SCHEMA_REGISTRY_URL: http://schema-registry:8081
       KAFKA_METRIC_REPORTERS: io.confluent.telemetry.reporter.TelemetryReporter
-      CONFLUENT_METRICS_REPORTER_BOOTSTRAP_SERVERS: broker:29092
+      CONFLUENT_METRICS_REPORTER_BOOTSTRAP_SERVERS: kafka:29092
       CONFLUENT_METRICS_REPORTER_TOPIC_REPLICAS: 1
       KAFKA_PROCESS_ROLES: 'broker,controller'
-      KAFKA_CONTROLLER_QUORUM_VOTERS: '1@broker:29093'
-      KAFKA_LISTENERS: 'PLAINTEXT://broker:29092,CONTROLLER://broker:29093,PLAINTEXT_HOST://0.0.0.0:9092'
+      KAFKA_CONTROLLER_QUORUM_VOTERS: '1@kafka:29093'
+      KAFKA_LISTENERS: 'PLAINTEXT://kafka:29092,CONTROLLER://kafka:29093,PLAINTEXT_HOST://0.0.0.0:9092'
       KAFKA_INTER_BROKER_LISTENER_NAME: 'PLAINTEXT'
       KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
       KAFKA_LOG_DIRS: '/tmp/kraft-combined-logs'
@@ -34,7 +34,7 @@ services:
       CLUSTER_ID: '1GkQmFnKSwWK6CO2M9hAWA'
       KAFKA_CONFLUENT_TELEMETRY_EXPORTER_C3PLUSPLUS_TYPE: "http"
       KAFKA_CONFLUENT_TELEMETRY_EXPORTER_C3PLUSPLUS_ENABLED: "true"
-      KAFKA_CONFLUENT_TELEMETRY_EXPORTER_C3PLUSPLUS_METRICS_INCLUDE: "io.confluent.kafka.server.request.(?!.*delta).*|io.confluent.kafka.server.server.broker.state|io.confluent.kafka.server.replica.manager.leader.count|io.confluent.kafka.server.request.queue.size|io.confluent.kafka.server.broker.topic.failed.produce.requests.rate.1.min|io.confluent.kafka.server.tier.archiver.total.lag|io.confluent.kafka.server.request.total.time.ms.p99|io.confluent.kafka.server.broker.topic.failed.fetch.requests.rate.1.min|io.confluent.kafka.server.broker.topic.total.fetch.requests.rate.1.min|io.confluent.kafka.server.partition.caught.up.replicas.count|io.confluent.kafka.server.partition.observer.replicas.count|io.confluent.kafka.server.tier.tasks.num.partitions.in.error|io.confluent.kafka.server.broker.topic.bytes.out.rate.1.min|io.confluent.kafka.server.request.total.time.ms.p95|io.confluent.kafka.server.controller.active.controller.count|io.confluent.kafka.server.request.total.time.ms.p999|io.confluent.kafka.server.controller.active.broker.count|io.confluent.kafka.server.request.handler.pool.request.handler.avg.idle.percent.rate.1.min|io.confluent.kafka.server.controller.unclean.leader.elections.rate.1.min|io.confluent.kafka.server.replica.manager.partition.count|io.confluent.kafka.server.controller.unclean.leader.elections.total|io.confluent.kafka.server.partition.replicas.count|io.confluent.kafka.server.broker.topic.total.produce.requests.rate.1.min|io.confluent.kafka.server.controller.offline.partitions.count|io.confluent.kafka.server.socket.server.network.processor.avg.idle.percent|io.confluent.kafka.server.partition.under.replicated|io.confluent.kafka.server.log.log.start.offset|io.confluent.kafka.server.log.tier.size|io.confluent.kafka.server.log.size|io.confluent.kafka.server.tier.fetcher.bytes.fetched.total|io.confluent.kafka.server.request.total.time.ms.p50|io.confluent.kafka.server.tenant.consumer.lag.offsets|io.confluent.kafka.server.log.log.end.offset|io.confluent.kafka.server.broker.topic.bytes.in.rate.1.min|io.confluent.kafka.server.partition.under.min.isr|io.confluent.kafka.server.partition.in.sync.replicas.count|io.confluent.telemetry.http.exporter.batches.dropped|io.confluent.telemetry.http.exporter.items.total|io.confluent.telemetry.http.exporter.items.succeeded|io.confluent.telemetry.http.exporter.send.time.total.millis|io.confluent.kafka.server.controller.leader.election.rate.(?!.*delta).*|io.confluent.telemetry.http.exporter.batches.failed"
+      KAFKA_CONFLUENT_TELEMETRY_EXPORTER_C3PLUSPLUS_METRICS_INCLUDE: "io.confluent.kafka.server.request.(?!.*delta).*|io.confluent.kafka.server.socket_server.connections|io.confluent.kafka.server.server.broker.state|io.confluent.kafka.server.replica.manager.leader.count|io.confluent.kafka.server.request.queue.size|io.confluent.kafka.server.broker.topic.failed.produce.requests.rate.1.min|io.confluent.kafka.server.tier.archiver.total.lag|io.confluent.kafka.server.request.total.time.ms.p99|io.confluent.kafka.server.broker.topic.failed.fetch.requests.rate.1.min|io.confluent.kafka.server.broker.topic.total.fetch.requests.rate.1.min|io.confluent.kafka.server.partition.caught.up.replicas.count|io.confluent.kafka.server.partition.observer.replicas.count|io.confluent.kafka.server.tier.tasks.num.partitions.in.error|io.confluent.kafka.server.broker.topic.bytes.out.rate.1.min|io.confluent.kafka.server.request.total.time.ms.p95|io.confluent.kafka.server.controller.active.controller.count|io.confluent.kafka.server.session.expire.listener.zookeeper.disconnects.total|io.confluent.kafka.server.request.total.time.ms.p999|io.confluent.kafka.server.controller.active.broker.count|io.confluent.kafka.server.request.handler.pool.request.handler.avg.idle.percent.rate.1.min|io.confluent.kafka.server.session.expire.listener.zookeeper.disconnects.rate.1.min|io.confluent.kafka.server.controller.unclean.leader.elections.rate.1.min|io.confluent.kafka.server.replica.manager.partition.count|io.confluent.kafka.server.controller.unclean.leader.elections.total|io.confluent.kafka.server.partition.replicas.count|io.confluent.kafka.server.broker.topic.total.produce.requests.rate.1.min|io.confluent.kafka.server.controller.offline.partitions.count|io.confluent.kafka.server.socket.server.network.processor.avg.idle.percent|io.confluent.kafka.server.partition.under.replicated|io.confluent.kafka.server.log.log.start.offset|io.confluent.kafka.server.log.tier.size|io.confluent.kafka.server.log.size|io.confluent.kafka.server.tier.fetcher.bytes.fetched.total|io.confluent.kafka.server.request.total.time.ms.p50|io.confluent.kafka.server.tenant.consumer.lag.offsets|io.confluent.kafka.server.session.expire.listener.zookeeper.expires.rate.1.min|io.confluent.kafka.server.log.log.end.offset|io.confluent.kafka.server.broker.topic.bytes.in.rate.1.min|io.confluent.kafka.server.partition.under.min.isr|io.confluent.kafka.server.partition.in.sync.replicas.count|io.confluent.telemetry.http.exporter.batches.dropped|io.confluent.telemetry.http.exporter.items.total|io.confluent.telemetry.http.exporter.items.succeeded|io.confluent.telemetry.http.exporter.send.time.total.millis|io.confluent.kafka.server.controller.leader.election.rate.(?!.*delta).*|io.confluent.telemetry.http.exporter.batches.failed|org.apache.kafka.consumer.(fetch.manager.fetch.latency.avg|connection.creation.total|fetch.manager.fetch.total|fetch.manager.bytes.consumed.rate)|org.apache.kafka.producer.(bufferpool.wait.ratio|record.queue.time.avg|request.latency.avg|produce.throttle.time.avg|connection.creation.total|request.total|topic.byte.rate)"
       KAFKA_CONFLUENT_TELEMETRY_EXPORTER_C3PLUSPLUS_CLIENT_BASE_URL: "http://prometheus:9090/api/v1/otlp"
       KAFKA_CONFLUENT_TELEMETRY_EXPORTER_C3PLUSPLUS_CLIENT_COMPRESSION: "gzip"
       KAFKA_CONFLUENT_TELEMETRY_EXPORTER_C3PLUSPLUS_API_KEY: "dummy"
@@ -45,18 +45,22 @@ services:
       KAFKA_CONFLUENT_TELEMETRY_METRICS_COLLECTOR_INTERVAL_MS: "60000"
       KAFKA_CONFLUENT_TELEMETRY_REMOTECONFIG_CONFLUENT_ENABLED: "false"
       KAFKA_CONFLUENT_CONSUMER_LAG_EMITTER_ENABLED: "true"
+      KAFKA_CONFLUENT_TELEMETRY_EXTERNAL_CLIENT_METRICS_PUSH_ENABLED: "true"
+      KAFKA_CONFLUENT_TELEMETRY_EXTERNAL_CLIENT_METRICS_DELTA_TEMPORALITY: "false"
+      KAFKA_CONFLUENT_TELEMETRY_EXTERNAL_CLIENT_METRICS_SUBSCRIPTION_INTERVAL_MS_LIST: "60000"
+      KAFKA_CONFLUENT_TELEMETRY_EXTERNAL_CLIENT_METRICS_SUBSCRIPTION_METRICS_LIST: "org.apache.kafka.consumer.fetch.manager.fetch.latency.avg,org.apache.kafka.consumer.connection.creation.total,org.apache.kafka.consumer.fetch.manager.fetch.total,org.apache.kafka.consumer.fetch.manager.bytes.consumed.rate,org.apache.kafka.producer.bufferpool.wait.ratio,org.apache.kafka.producer.record.queue.time.avg,org.apache.kafka.producer.request.latency.avg,org.apache.kafka.producer.produce.throttle.time.avg,org.apache.kafka.producer.connection.creation.total,org.apache.kafka.producer.request.total,org.apache.kafka.producer.topic.byte.rate"
 
   schema-registry:
     image: confluentinc/cp-schema-registry:8.1.1
     hostname: schema-registry
     container_name: schema-registry
     depends_on:
-      - broker
+      - kafka
     ports:
       - "8081:8081"
     environment:
       SCHEMA_REGISTRY_HOST_NAME: schema-registry
-      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: 'broker:29092'
+      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: 'kafka:29092'
       SCHEMA_REGISTRY_LISTENERS: http://0.0.0.0:8081
 
   connect:
@@ -64,12 +68,12 @@ services:
     hostname: connect
     container_name: connect
     depends_on:
-      - broker
+      - kafka
       - schema-registry
     ports:
       - "8083:8083"
     environment:
-      CONNECT_BOOTSTRAP_SERVERS: 'broker:29092'
+      CONNECT_BOOTSTRAP_SERVERS: 'kafka:29092'
       CONNECT_REST_ADVERTISED_HOST_NAME: connect
       CONNECT_GROUP_ID: compose-connect-group
       CONNECT_CONFIG_STORAGE_TOPIC: connect-config
@@ -82,10 +86,6 @@ services:
       CONNECT_KEY_CONVERTER: org.apache.kafka.connect.storage.StringConverter
       CONNECT_VALUE_CONVERTER: io.confluent.connect.avro.AvroConverter
       CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL: http://schema-registry:8081
-      # CLASSPATH required due to CC-2422
-      CLASSPATH: /usr/share/java/monitoring-interceptors/monitoring-interceptors-8.1.1.jar
-      CONNECT_PRODUCER_INTERCEPTOR_CLASSES: "io.confluent.monitoring.clients.interceptor.MonitoringProducerInterceptor"
-      CONNECT_CONSUMER_INTERCEPTOR_CLASSES: "io.confluent.monitoring.clients.interceptor.MonitoringConsumerInterceptor"
       CONNECT_PLUGIN_PATH: "/usr/share/java,/usr/share/confluent-hub-components"
 
   prometheus:
@@ -119,7 +119,7 @@ services:
     hostname: control-center
     container_name: control-center
     depends_on:
-      - broker
+      - kafka
       - schema-registry
       - connect
       - prometheus
@@ -129,7 +129,7 @@ services:
     volumes:
       - ./vol/config:/mnt/config
     environment:
-      CONTROL_CENTER_BOOTSTRAP_SERVERS: 'broker:29092'
+      CONTROL_CENTER_BOOTSTRAP_SERVERS: 'kafka:29092'
       CONTROL_CENTER_CONNECT_CONNECT-DEFAULT_CLUSTER: 'connect:8083'
       CONTROL_CENTER_CONNECT_HEALTHCHECK_ENDPOINT: '/connectors'
       CONTROL_CENTER_SCHEMA_REGISTRY_URL: "http://schema-registry:8081"
@@ -143,3 +143,130 @@ services:
       CONTROL_CENTER_ALERTMANAGER_URL: http://alertmanager:9093
       CONTROL_CENTER_ALERTMANAGER_CONFIG_FILE: /mnt/config/alertmanager-generated.yml
       PORT: 9021
+
+
+  producer1:
+    image: cnfltraining/java-producer-avro:1.0
+    container_name: producer1
+    environment:
+      DRIVER_ID: driver-1
+    command: "bash -c 'until curl -fsSL schema-registry:8081/subjects/ ; \
+                      do sleep 1; \
+                      echo waiting for schema; \
+                      done; \
+                      java -classpath \"lib/*\" clients.Producer'"
+
+  producer2:
+    image: cnfltraining/java-producer-avro:1.0
+    container_name: producer2
+    environment:
+      DRIVER_ID: driver-2
+    command: "bash -c 'until curl -fsSL schema-registry:8081/subjects/ ; \
+                      do sleep 1; \
+                      echo waiting for schema; \
+                      done; \
+                      java -classpath \"lib/*\" clients.Producer'"
+
+  producer3:
+    image: cnfltraining/java-producer-avro:1.0
+    container_name: producer3
+    environment:
+      DRIVER_ID: driver-3
+    command: "bash -c 'until curl -fsSL schema-registry:8081/subjects/ ; \
+                      do sleep 1; \
+                      echo waiting for schema; \
+                      done; \
+                      java -classpath \"lib/*\" clients.Producer'"
+
+  producer4:
+    image: cnfltraining/java-producer-avro:1.0
+    container_name: producer4
+    environment:
+      DRIVER_ID: driver-4
+    command: "bash -c 'until curl -fsSL schema-registry:8081/subjects/ ; \
+                      do sleep 1; \
+                      echo waiting for schema; \
+                      done; \
+                      java -classpath \"lib/*\" clients.Producer'"
+
+  producer5:
+    image: cnfltraining/java-producer-avro:1.0
+    container_name: producer5
+    environment:
+      DRIVER_ID: driver-5
+    command: "bash -c 'until curl -fsSL schema-registry:8081/subjects/ ; \
+                      do sleep 1; \
+                      echo waiting for schema; \
+                      done; \
+                      java -classpath \"lib/*\" clients.Producer'"
+
+  webserver:
+    image: cnfltraining/node-webserver:1.0
+    container_name: webserver
+    hostname: webserver
+    ports:
+      - 3001:3000
+    command: "bash -c 'until kafkacat -b kafka:9092 -L | grep driver-positions; \
+                      do sleep 1; \
+                      echo waiting for topic; \
+                      done; \
+                      npm run start'"
+
+  webserver-avro:
+    image: cnfltraining/node-webserver-avro:1.0
+    container_name: webserver-avro
+    hostname: webserver-avro
+    ports:
+      - 3002:3000
+    environment:
+      TOPIC: driver-positions-avro
+    command: "bash -c 'until curl -fsSL schema-registry:8081/subjects/ | grep driver-positions-avro-value ; \
+                      do sleep 1; \
+                      echo waiting for schema; \
+                      done; \
+                      npm run start'"
+
+  webserver-streams:
+    image: cnfltraining/node-webserver-avro:2.0
+    container_name: webserver-streams
+    hostname: webserver-streams
+    ports:
+      - 3003:3000
+    environment:
+      TOPIC: driver-positions-string-avro
+    command: "bash -c 'until curl -fsSL schema-registry:8081/subjects/ | grep driver-positions-string-avro-value ; \
+                      do sleep 1; \
+                      echo waiting for schema; \
+                      done; \
+                      npm run start'"
+
+  postgres:
+    image: postgres:16-alpine
+    restart: always
+    container_name: postgres
+    volumes:
+      - ./postgres/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+    ports:
+      - 5432:5432
+
+  create-topics:
+    image: confluentinc/cp-server:8.1.1
+    container_name: create-topics
+    depends_on:
+      - kafka
+    command: >
+      bash -c 'echo Waiting for Kafka to be ready... ;
+      until kafka-broker-api-versions --bootstrap-server kafka:29092 > /dev/null 2>&1; do
+        echo "Kafka not ready yet..."
+        sleep 2
+      done ;
+      echo Creating topics... ;
+      kafka-topics --bootstrap-server kafka:29092 --create --topic driver-positions --partitions 3 --replication-factor 1 ;
+      kafka-topics --bootstrap-server kafka:29092 --create --topic driver-profiles-avro --partitions 3 --replication-factor 1 --config cleanup.policy=compact ;
+      kafka-topics --bootstrap-server kafka:29092 --create --topic driver-profiles-protobuf --partitions 3 --replication-factor 1 --config cleanup.policy=compact ;
+      kafka-topics --bootstrap-server kafka:29092 --create --topic driver-profiles --partitions 3 --replication-factor 1 --config cleanup.policy=compact ;
+      kafka-topics --bootstrap-server kafka:29092 --create --topic driver-positions-avro --partitions 3 --replication-factor 1 ;
+      kafka-topics --bootstrap-server kafka:29092 --create --topic driver-distance-avro --partitions 3 --replication-factor 1 ;
+      kafka-topics --bootstrap-server kafka:29092 --create --topic driver-augmented-avro --partitions 3 --replication-factor 1 ;
+      kafka-topics --bootstrap-server kafka:29092 --create --topic driver-positions-string-avro --partitions 3 --replication-factor 1 ;
+      true'

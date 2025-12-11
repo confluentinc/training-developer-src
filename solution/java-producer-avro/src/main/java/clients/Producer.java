@@ -4,13 +4,11 @@ import clients.avro.PositionValue;
 
 import io.confluent.kafka.serializers.KafkaAvroSerializer;
 import io.confluent.kafka.serializers.KafkaAvroSerializerConfig;
-import io.confluent.monitoring.clients.interceptor.MonitoringProducerInterceptor;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.List;
 import java.util.Properties;
 
 import org.apache.kafka.clients.producer.KafkaProducer;
@@ -34,15 +32,13 @@ public class Producer {
     driverId = (driverId != null) ? driverId : "driver-1";
 
     // Configure the location of the bootstrap server, default serializers,
-    // Confluent interceptors, schema registry location
+    // schema registry location
     final Properties settings = new Properties();
     settings.put(ProducerConfig.CLIENT_ID_CONFIG, driverId);
     settings.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "kafka:9092");
     settings.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
     settings.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, KafkaAvroSerializer.class);
     settings.put(KafkaAvroSerializerConfig.SCHEMA_REGISTRY_URL_CONFIG, "http://schema-registry:8081");
-    settings.put(ProducerConfig.INTERCEPTOR_CLASSES_CONFIG,
-        List.of(MonitoringProducerInterceptor.class));
   
     final KafkaProducer<String, PositionValue> producer = new KafkaProducer<>(settings);
     

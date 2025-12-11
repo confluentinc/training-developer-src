@@ -55,7 +55,7 @@ console.log(`subscribing to ${topic}`);
 const stream = Kafka.createReadStream({
   'group.id': `${os.hostname()}`,
   'metadata.broker.list': 'kafka:9092',
-  'plugin.library.paths': 'monitoring-interceptor',
+  'client.id': 'webserver-avro-consumer',
 }, {'auto.offset.reset': 'earliest'}, {
   topics: [topic],
   waitInterval: 0,

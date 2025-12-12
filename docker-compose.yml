@@ -64,7 +64,7 @@ services:
       SCHEMA_REGISTRY_LISTENERS: http://0.0.0.0:8081
 
   connect:
-    image: confluentinc/cp-kafka-connect:8.1.1
+    image: confluentinc/cp-server-connect:8.1.1
     hostname: connect
     container_name: connect
     depends_on:
@@ -72,12 +72,6 @@ services:
       - schema-registry
     ports:
       - "8083:8083"
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8083/"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
-      start_period: 60s
     environment:
       CONNECT_BOOTSTRAP_SERVERS: 'kafka:29092'
       CONNECT_REST_ADVERTISED_HOST_NAME: connect
@@ -93,22 +87,7 @@ services:
       CONNECT_VALUE_CONVERTER: io.confluent.connect.avro.AvroConverter
       CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL: http://schema-registry:8081
       CONNECT_PLUGIN_PATH: "/usr/share/java,/usr/share/confluent-hub-components"
-    command:
-      - bash
-      - -c
-      - |
-        echo "Waiting for Kafka to be ready..."
-        until curl -s kafka:29092 > /dev/null 2>&1 || nc -z kafka 29092; do
-          echo "Kafka not ready, waiting..."
-          sleep 5
-        done
-        echo "Waiting for Schema Registry to be ready..."
-        until curl -s http://schema-registry:8081/subjects > /dev/null 2>&1; do
-          echo "Schema Registry not ready, waiting..."
-          sleep 5
-        done
-        echo "Starting Kafka Connect..."
-        /etc/confluent/docker/run
+
 
   prometheus:
     image: confluentinc/cp-enterprise-prometheus:2.3.0
@@ -168,57 +147,92 @@ services:
 
 
   producer1:
-    image: cnfltraining/java-producer-avro:1.0
+    image: cnfltraining/java-producer-avro:2.0
     container_name: producer1
+    depends_on:
+      - kafka
+      - schema-registry
     environment:
       DRIVER_ID: driver-1
     command: "bash -c 'until curl -fsSL schema-registry:8081/subjects/ ; \
                       do sleep 1; \
-                      echo waiting for schema; \
+                      echo waiting for schema registry; \
+                      done; \
+                      until kcat -b kafka:29092 -L | grep driver-positions-avro ; \
+                      do sleep 1; \
+                      echo waiting for topic driver-positions-avro; \
                       done; \
                       java -classpath \"lib/*\" clients.Producer'"
 
   producer2:
-    image: cnfltraining/java-producer-avro:1.0
+    image: cnfltraining/java-producer-avro:2.0
     container_name: producer2
+    depends_on:
+      - kafka
+      - schema-registry
     environment:
       DRIVER_ID: driver-2
     command: "bash -c 'until curl -fsSL schema-registry:8081/subjects/ ; \
                       do sleep 1; \
-                      echo waiting for schema; \
+                      echo waiting for schema registry; \
+                      done; \
+                      until kcat -b kafka:29092 -L | grep driver-positions-avro ; \
+                      do sleep 1; \
+                      echo waiting for topic driver-positions-avro; \
                       done; \
                       java -classpath \"lib/*\" clients.Producer'"
 
   producer3:
-    image: cnfltraining/java-producer-avro:1.0
+    image: cnfltraining/java-producer-avro:2.0
     container_name: producer3
+    depends_on:
+      - kafka
+      - schema-registry
     environment:
       DRIVER_ID: driver-3
     command: "bash -c 'until curl -fsSL schema-registry:8081/subjects/ ; \
                       do sleep 1; \
-                      echo waiting for schema; \
+                      echo waiting for schema registry; \
+                      done; \
+                      until kcat -b kafka:29092 -L | grep driver-positions-avro ; \
+                      do sleep 1; \
+                      echo waiting for topic driver-positions-avro; \
                       done; \
                       java -classpath \"lib/*\" clients.Producer'"
 
   producer4:
-    image: cnfltraining/java-producer-avro:1.0
+    image: cnfltraining/java-producer-avro:2.0
     container_name: producer4
+    depends_on:
+      - kafka
+      - schema-registry
     environment:
       DRIVER_ID: driver-4
     command: "bash -c 'until curl -fsSL schema-registry:8081/subjects/ ; \
                       do sleep 1; \
-                      echo waiting for schema; \
+                      echo waiting for schema registry; \
+                      done; \
+                      until kcat -b kafka:29092 -L | grep driver-positions-avro ; \
+                      do sleep 1; \
+                      echo waiting for topic driver-positions-avro; \
                       done; \
                       java -classpath \"lib/*\" clients.Producer'"
 
   producer5:
-    image: cnfltraining/java-producer-avro:1.0
+    image: cnfltraining/java-producer-avro:2.0
     container_name: producer5
+    depends_on:
+      - kafka
+      - schema-registry
     environment:
       DRIVER_ID: driver-5
     command: "bash -c 'until curl -fsSL schema-registry:8081/subjects/ ; \
                       do sleep 1; \
-                      echo waiting for schema; \
+                      echo waiting for schema registry; \
+                      done; \
+                      until kcat -b kafka:29092 -L | grep driver-positions-avro ; \
+                      do sleep 1; \
+                      echo waiting for topic driver-positions-avro; \
                       done; \
                       java -classpath \"lib/*\" clients.Producer'"
 

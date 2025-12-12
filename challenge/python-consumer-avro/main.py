@@ -14,7 +14,7 @@ with open("position_value.avsc","r") as avro_file:
 
 schema_registry_client = SchemaRegistryClient({'url': 'http://schema-registry:8081'})
 
-avro_deserializer = AvroDeserializer(value_schema, schema_registry_client)
+avro_deserializer = AvroDeserializer(schema_registry_client, value_schema)
 
 # Configure the group id, location of the bootstrap server,
 # Confluent interceptors, and schema registry location

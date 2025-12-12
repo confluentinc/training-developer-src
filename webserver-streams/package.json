@@ -1,0 +1,23 @@
+{
+  "name": "node-webserver-streams",
+  "version": "1.0.0",
+  "description": "Webserver for Kafka Streams output",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "pretest": "eslint server.js"
+  },
+  "author": "Confluent Training",
+  "license": "ISC",
+  "dependencies": {
+    "avsc": "^5.7.9",
+    "express": "^4.21.1",
+    "node-rdkafka": "^3.6.1",
+    "socket.io": "^4.8.1"
+  },
+  "devDependencies": {
+    "eslint": "^8.57.1",
+    "eslint-config-google": "^0.14.0"
+  }
+}
+

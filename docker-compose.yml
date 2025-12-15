@@ -121,8 +121,6 @@ services:
     container_name: control-center
     depends_on:
       - kafka
-      - schema-registry
-      - connect
       - prometheus
       - alertmanager
     ports:

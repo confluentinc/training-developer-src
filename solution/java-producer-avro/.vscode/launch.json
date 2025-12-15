@@ -15,7 +15,8 @@
 			"name": "Debug (Launch)-Producer<java-producer-avro>",
 			"request": "launch",
 			"mainClass": "clients.Producer",
-			"projectName": "java-producer-avro"
+			"projectName": "java-producer-avro",
+			"preLaunchTask": "gradle-build"
 		}
 	]
 }

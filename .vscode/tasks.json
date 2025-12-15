@@ -2,14 +2,14 @@
 	"version": "2.0.0",
 	"tasks": [
 		{
-			"label": "gradle-build",
+			"label": "gradle-build-java-producer-avro",
 			"type": "shell",
 			"command": "./gradlew",
 			"args": ["build", "-x", "test"],
-			"group": {
-				"kind": "build",
-				"isDefault": true
+			"options": {
+				"cwd": "${workspaceFolder}"
 			},
+			"group": "build",
 			"problemMatcher": []
 		}
 	]

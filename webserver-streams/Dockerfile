@@ -1,4 +1,4 @@
-FROM node:22-alpine
+FROM --platform=$TARGETPLATFORM node:22-alpine
 
 # Install build dependencies for node-rdkafka native compilation
 RUN apk add --no-cache \

@@ -3,18 +3,21 @@ plugins {
   id 'application'
 }
 
-mainClassName = 'clients.Consumer'
+application {
+    mainClass = 'clients.Consumer'
+}
 
 repositories {
     mavenCentral()
-    maven { url 'http://packages.confluent.io/maven/' }
+    maven { url "https://packages.confluent.io/maven/" }
 }
 
-sourceCompatibility = 11
-targetCompatibility = 11
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+}
 
 dependencies {
-    compile group: 'org.apache.kafka', name: 'kafka-clients', version: '2.6.0'
-    compile group: "io.confluent", name: "monitoring-interceptors", version: '6.0.0'
-    compile group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.7.30'
+    implementation group: 'org.apache.kafka', name: 'kafka-clients', version: '4.1.1'
+    implementation group: 'org.slf4j', name: 'slf4j-reload4j', version: '2.0.16'
 }

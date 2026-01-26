@@ -19,14 +19,13 @@
         {
             Console.WriteLine("Starting .net consumer.");
 
-            // Configure the group id, location of the bootstrap server, default deserializers,
-            // Confluent interceptors
+            // Configure the group id, location of the bootstrap server, default deserializers
             var consumerConfig = new ConsumerConfig
             {
                 BootstrapServers = "kafka:9092",
+                ClientId = "dotnet-consumer-client",
                 GroupId = "csharp-consumer",
                 AutoOffsetReset = AutoOffsetReset.Earliest,
-                PluginLibraryPaths = "monitoring-interceptor",
             };
 
             using (var consumer = new ConsumerBuilder<string, string>(consumerConfig).Build())

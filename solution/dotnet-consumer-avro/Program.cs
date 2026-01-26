@@ -26,9 +26,9 @@
             var consumerConfig = new ConsumerConfig
             {
                 BootstrapServers = "kafka:9092",
+                ClientId = "dotnet-consumer-avro-client",
                 GroupId = "csharp-consumer-avro",
                 AutoOffsetReset = AutoOffsetReset.Earliest,
-                PluginLibraryPaths = "monitoring-interceptor",
             };
             // Configure schema registry location
             var schemaRegistryConfig = new SchemaRegistryConfig { Url = "http://schema-registry:8081" };

@@ -14,15 +14,15 @@ with open("position_value.avsc","r") as avro_file:
 
 schema_registry_client = SchemaRegistryClient({'url': 'http://schema-registry:8081'})
 
-avro_deserializer = AvroDeserializer(value_schema, schema_registry_client)
+avro_deserializer = AvroDeserializer(schema_registry_client, value_schema)
 
 # Configure the group id, location of the bootstrap server,
 # Confluent interceptors, and schema registry location
 consumer_conf = {'bootstrap.servers': "kafka:9092",
+                 'client.id': 'python-consumer-avro-client',
                  'key.deserializer': StringDeserializer('utf_8'),
                  'value.deserializer': avro_deserializer,
                  'group.id': 'python-consumer-avro',
-                 'plugin.library.paths': 'monitoring-interceptor',
                  'auto.offset.reset': "earliest"}
 
 consumer = DeserializingConsumer(consumer_conf)

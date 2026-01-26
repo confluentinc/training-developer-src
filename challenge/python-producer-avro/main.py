@@ -25,12 +25,12 @@ with open("position_value.avsc","r") as avro_file:
 # see https://github.com/edenhill/librdkafka/blob/master/CONFIGURATION.md
 schema_registry_client = SchemaRegistryClient({'url': 'http://schema-registry:8081'})
 
-avro_serializer = AvroSerializer(value_schema, schema_registry_client)
+avro_serializer = AvroSerializer(schema_registry_client, value_schema)
 
 producer_conf = {'bootstrap.servers': 'kafka:9092',
+                 'client.id': 'python-producer-avro',
                  'key.serializer': StringSerializer('utf_8'),
                  'value.serializer': avro_serializer,
-                 'plugin.library.paths': 'monitoring-interceptor',
                  'partitioner': 'murmur2_random'}
 
 producer = SerializingProducer(producer_conf)

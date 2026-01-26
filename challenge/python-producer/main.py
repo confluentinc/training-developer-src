@@ -19,7 +19,7 @@ print("Starting Python producer.")
 producer = Producer({
     #TODO: configure the location of the bootstrap server
     'bootstrap.servers': ???
-    'plugin.library.paths': 'monitoring-interceptor',
+    'client.id': 'python-producer',
     'partitioner': 'murmur2_random'
 })
 

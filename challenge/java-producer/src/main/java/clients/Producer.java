@@ -1,12 +1,9 @@
 package clients;
 
-import io.confluent.monitoring.clients.interceptor.MonitoringProducerInterceptor;
-
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.List;
 import java.util.Properties;
 
 import org.apache.kafka.clients.producer.KafkaProducer;
@@ -29,16 +26,13 @@ public class Producer {
     String driverId  = System.getenv("DRIVER_ID");
     driverId = (driverId != null) ? driverId : "driver-1";
 
-    // Configure the location of the bootstrap server, default serializers,
-    // Confluent interceptors
+    // Configure the location of the bootstrap server, default serializers
     final Properties settings = new Properties();
     settings.put(ProducerConfig.CLIENT_ID_CONFIG, driverId);
     // TODO: configure the location of the bootstrap server
     settings.put(ProducerConfig.???
     settings.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
     settings.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-    settings.put(ProducerConfig.INTERCEPTOR_CLASSES_CONFIG,
-        List.of(MonitoringProducerInterceptor.class));
 
     final KafkaProducer<String, String> producer = new KafkaProducer<>(settings);
     

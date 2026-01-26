@@ -10,15 +10,15 @@ print("Starting Python Consumer.")
 # Confluent interceptors
 consumer = Consumer({
     'bootstrap.servers': 'kafka:9092',
-    'plugin.library.paths': 'monitoring-interceptor',
+    'client.id': 'python-consumer-prev-client',
     'group.id': 'python-consumer-prev',
     'auto.offset.reset': 'earliest'
 })
 
 def my_on_assign(konsumer, partitions):
     "On partition assignment move the offsets to 5 min ago"
-    # Calculate the time 5 minutes ago
-    timestamp = (time.time() - (5 * 60)) * 1000
+    # Calculate the time 5 minutes ago (must be int for offset)
+    timestamp = int((time.time() - (5 * 60)) * 1000)
 
     # Create topic+partitions with timestamps in the TopicPartition.offset field
     for part in partitions:

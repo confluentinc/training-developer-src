@@ -21,13 +21,13 @@
         {
             Console.WriteLine("Starting .net producer.");
 
-            // Configure the location of the bootstrap server, and Confluent interceptors
+            // Configure the location of the bootstrap server
             // and a partitioner compatible with Java - see https://github.com/edenhill/librdkafka/blob/master/CONFIGURATION.md
             var producerConfig = new ProducerConfig
             {
               // TODO: configure the location of the bootstrap server
               BootstrapServers = ???
-              PluginLibraryPaths = "monitoring-interceptor",
+              ClientId = "dotnet-producer",
               Partitioner = Partitioner.Murmur2Random,
             };
 

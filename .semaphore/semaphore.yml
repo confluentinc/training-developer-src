@@ -17,4 +17,3 @@ blocks:
             - git push origin $TAG_VERSION
     run:
       when: branch = 'master'
-      
